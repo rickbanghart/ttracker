@@ -38,17 +38,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     var serverQueue =  new Array();
     var addItemButton;
     var entryForm;
+    var confirmationBox;
     initialize_page();
     function addItemButtonClicked(buttonClicked) {
-        
+        var entryForm = document.getElementById('entryForm');
+        entryForm.setAttribute('itemid','0');
+        entryForm.setAttribute('itemtype',buttonClicked.getAttribute('itemtype'));
         showEntryForm();
     }
     function buildBreadCrumbs(listItem) {
         var destination = document.getElementById('breadCrumbContainer');
         destination.innerHTML = '';
         var showAllButton = document.createElement('button');
-        showAllButton.setAttribute('onclick','showAllButtonClicked(this}');
-        var showAllButtonTextNode = document.createTextNode('All');
+        showAllButton.setAttribute('onclick','breadCrumbButtonClicked(this)');
+        //showAllButton.onclick = 'showAllButtonClicked(this)';
+        //showAllButton.setAttribute('type','button');
+        var showAllButtonTextNode = document.createTextNode('Templates');
         showAllButton.appendChild(showAllButtonTextNode);
         destination.appendChild(showAllButton);
         switch (listItem.getAttribute('itemtype')) {
@@ -61,6 +66,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             default:
                 // default statements
         }
+    }
+	function breadCrumbButtonClicked(buttonClicked) {
+		clearEntryForm();    
+	    resetData();
+	}
+    function cancelButtonClicked(buttonClicked) {
+        showConfirmation();
+    }
+    function clearEntryForm() {
+        document.getElementById('entryForm').style.display = 'none';
     }
 	function checkServerQueue() {
 		if (serverQueue.length > 0) {
@@ -96,6 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         entryFormTitleInput.setAttribute('id', 'entryFormTitleInput');
         entryFormTitleInput.setAttribute('type','text');
         entryFormTitleInput.setAttribute('fieldname','template_title');
+        entryFormTitleInput.setAttribute('onkeypress','setFormDirty(this.parentNode)');
         entryFormTitleInput.style.width = '100%';
         entryForm.appendChild(entryFormTitleInput);
         entryFormDescriptionLabelDiv = document.createElement('div');
@@ -105,6 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         entryFormTextArea = document.createElement('textarea');
         entryFormTextArea.setAttribute('id','entryFormTextArea');
         entryFormTextArea.setAttribute('fieldname','template_description');
+        entryFormTextArea.setAttribute('onkeypress','setFormDirty(this.parentNode)');
         entryFormTextArea.style.width = '100%';
         entryFormTextArea.style.width = '100%';
         entryForm.appendChild(entryFormTextArea);
@@ -140,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		}
 		xmlhttp.onreadystatechange=function()  {
 	  		if (xmlhttp.readyState==4 && xmlhttp.status==200)  {
-	  		    //console.log(xmlhttp.responseText + ' back from server, destination is ' + destination);
+	  		    console.log(xmlhttp.responseText + ' back from server');
   		        var returnData =  eval('(' + xmlhttp.responseText + ')');
 	  		    //console.log(returnData.dataDestination + ' is data destination');
 	  		    switch (returnData.dataDestination) {
@@ -150,7 +167,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                          // statements
                     break;
                     case 'templateDetail':
-                        
+                        console.log('got templateDetail');
+                        var listItems = returnData.dataObject;
+                        populateListItemContainer(listItems, 'templateDetail');
                     break;
                     default:
                         // default statements
@@ -191,40 +210,83 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		xmlhttp.send();
 	}
 	function listItemClicked(listItem) {
-	    
 	    switch (listItem.getAttribute('itemtype')) {
-            case 'template':
+      		case 'template':
                 var dataObject = new Object();
                 dataObject.action = 'gettemplatedetail';
                 dataObject.templateid = listItem.getAttribute('templateid');
                 serverQueue.push(dataObject, 'listItemContainer');
                 checkServerQueue();
                 buildBreadCrumbs(listItem);
+                populateEntryForm(listItem);
             break;
             default:
                 // default statements
         }
 	    console.log('list item clicked');
 	}
+	function makeListItemElement(titleText, itemType) {
+        var listItemElement = document.createElement('div');
+        listItemElement.className = 'listItemDiv';
+        listItemElement.setAttribute('itemtype',itemType);
+        listItemElement.setAttribute('templateid', templateId);
+        listItemElement.setAttribute('onclick','listItemClicked(this)');
+        var listItemTextNode = document.createTextNode(titleText);
+        listItemElement.appendChild(listItemTextNode);
+        return(listItemElement)
+	}
+	function populateEntryForm(entryItem) {
+	    document.getElementById('entryFormTitleInput').value = entryItem.childNodes[0].nodeValue;
+	    document.getElementById('entryFormTextArea').value = entryItem.getAttribute('description');
+	    setFormClean(document.getElementById('entryForm'));
+	}
 	function populateListItemContainer(listItems, itemType) {
 	    var destination = document.getElementById('listItemContainer');
 	    destination.innerHTML = '';
-	    for (var itemNum = 0; itemNum < listItems.length; itemNum ++) {
-	        var listItemElement = document.createElement('div');
-	        listItemElement.className = 'listItemDiv';
-	        listItemElement.setAttribute('itemtype',itemType);
-	        listItemElement.setAttribute('templateid', listItems[itemNum].template_id);
-	        listItemElement.setAttribute('onclick','listItemClicked(this)');
-	        var listItemTextNode = document.createTextNode(listItems[itemNum].title);
-	        listItemElement.appendChild(listItemTextNode);
-	        destination.appendChild(listItemElement);
-	    }
+	    if (itemType == 'template') {
+    	    for (var itemNum = 0; itemNum < listItems.length; itemNum ++) {
+    	        var listItemElement = document.createElement('div');
+    	        listItemElement.className = 'listItemDiv';
+    	        listItemElement.setAttribute('itemtype',itemType);
+    	        listItemElement.setAttribute('templateid', listItems[itemNum].template_id);
+    	        listItemElement.setAttribute('onclick','listItemClicked(this)');
+    	        listItemElement.setAttribute('description',listItems[itemNum].description);
+    	        var listItemTextNode = document.createTextNode(listItems[itemNum].title);
+    	        listItemElement.appendChild(listItemTextNode);
+    	        destination.appendChild(listItemElement);
+    	    }
+    	} else if (itemType == 'templateDetail') {
+            // looking for clusters
+            var clusters = listItems.clusters;
+            if (clusters) {
+                for (clusterNum = 0; clusterNum < clusters.length; clusterNum++) {
+                     var listItemElement = makeListItemElement('title here', 'cluster');
+                     destination.appendChild(listItemElement);
+                }
+            }
+            showEntryForm();
+        }
+        addItemButton.setAttribute('itemtype',itemType);
 	    destination.appendChild(addItemButton);
+	}
+	function resetData() {
+        var dataObject = new Object();
+        dataObject.action = 'get_templates';
+        serverQueue.push(dataObject);
+        serverQueue.push('listItemContainer');
+        checkServerQueue();
+        var dummy = document.createElement('div');
+        dummy.setAttribute('itemType','dummy');
+        buildBreadCrumbs(dummy);
 	}
 	function saveButtonClicked(buttonClicked) {
 	    var dataObject = scrapeForm(buttonClicked.parentNode);
+	    dataObject.template_id = buttonClicked.parentNode.getAttribute('itemid');
 	    dataObject.action = 'savetemplate';
 	    console.log('dataObject title is ' + dataObject.template_title);
+      serverQueue.push(dataObject);
+      serverQueue.push('insertdata');
+      checkServerQueue();
 	}
 	function scrapeForm(formItem) {
 	    var dataObject = new Object();
@@ -247,8 +309,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         return(dataObject);
 	}
-	function showAllButtonClicked(buttonClicked) {
-	    console.log('button clicked');
+	function setFormClean(formDiv) {
+	    console.log('setting clean');
+	    formDiv.style.backgroundColor = '#eeffee';
+	}
+	function setFormDirty(formDiv) {
+	    console.log('setting dirty');
+	    formDiv.style.backgroundColor = '#ffeeee';
+	}
+	function showConfirmation() {
+	    document.getElementById('confirmationBox');
 	}
 	function showEntryForm() {
 	    entryForm.style.display = 'block';
@@ -266,7 +336,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </script>
 <style>
     button {
-        width:50xp;
         border: 1px solid #888;
         border-radius:3px;
         background-color:#888;
@@ -316,7 +385,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	    float:left;
 	}
 	#entryForm {
-	    width:300px;
+	    width:450px;
 	    padding:4px;
 	    border: 1px solid #888;
 	    border-radius:10px;
