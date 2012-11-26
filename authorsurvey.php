@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <title>Author Survey</title>
 </head>
-<body>
+<body onkeydown="keystrokeHandler(event)">
     <div id="contentContainer">
         <div id="statusMessage"></div>
         <div id="breadCrumbContainer"></div>
@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </body>
 <script type="text/javascript">
     var ELEMENT_NODE = 1;
+    var focusElement = document.createElement('div');
     var templateId;
     var serverQueue =  new Array();
     var addItemButton;
@@ -44,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         var entryForm = document.getElementById('entryForm');
         entryForm.setAttribute('itemid','0');
         entryForm.setAttribute('itemtype',buttonClicked.getAttribute('itemtype'));
+        clearEntryForm();
         showEntryForm();
     }
     function buildBreadCrumbs(listItem) {
@@ -68,7 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 	function breadCrumbButtonClicked(buttonClicked) {
-		clearEntryForm();    
+		clearEntryForm(); 
+		hideEntryForm();   
 	    resetData();
 	}
     function cancelButtonClicked(buttonClicked) {
@@ -87,60 +90,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	function clearStatus() {
 		document.getElementById('statusMessage').style.display = 'none';
 	}
-    function initialize_page() {
-        var dataObject = new Object();
-        dataObject.action = 'get_templates';
-        serverQueue.push(dataObject);
-        serverQueue.push('listItemContainer');
-        checkServerQueue();
-        var dummy = document.createElement('div');
-        dummy.setAttribute('itemType','dummy');
-        buildBreadCrumbs(dummy);
-        addItemButton = document.createElement('button');
-        var addItemButtonTextNode = document.createTextNode('Add');
-        addItemButton.appendChild(addItemButtonTextNode);
-        addItemButton.setAttribute('id','addItemButton');
-        addItemButton.setAttribute('onclick','addItemButtonClicked(this)');
-        entryForm = document.createElement('div');
-        entryForm.setAttribute('id','entryForm');
-        entryFormTitleLabelDiv = document.createElement('div');
-        entryFormTitleLabel = document.createTextNode('Title');
-        entryFormTitleLabelDiv.appendChild(entryFormTitleLabel);
-        entryForm.appendChild(entryFormTitleLabelDiv);
-        entryFormTitleInput = document.createElement('input');
-        entryFormTitleInput.setAttribute('id', 'entryFormTitleInput');
-        entryFormTitleInput.setAttribute('type','text');
-        entryFormTitleInput.setAttribute('fieldname','template_title');
-        entryFormTitleInput.setAttribute('onkeypress','setFormDirty(this.parentNode)');
-        entryFormTitleInput.style.width = '100%';
-        entryForm.appendChild(entryFormTitleInput);
-        entryFormDescriptionLabelDiv = document.createElement('div');
-        entryFormDescriptionLabel = document.createTextNode('Description');
-        entryFormDescriptionLabelDiv.appendChild(entryFormDescriptionLabel);
-        entryForm.appendChild(entryFormDescriptionLabelDiv);
-        entryFormTextArea = document.createElement('textarea');
-        entryFormTextArea.setAttribute('id','entryFormTextArea');
-        entryFormTextArea.setAttribute('fieldname','template_description');
-        entryFormTextArea.setAttribute('onkeypress','setFormDirty(this.parentNode)');
-        entryFormTextArea.style.width = '100%';
-        entryFormTextArea.style.width = '100%';
-        entryForm.appendChild(entryFormTextArea);
-        cancelButton = document.createElement('button');
-        cancelButton.setAttribute('type','button');
-        cancelButton.setAttribute('onclick','cancelButtonClicked(this)');
-        cancelButtonText = document.createTextNode('Cancel');
-        cancelButton.appendChild(cancelButtonText);
-        cancelButton.style.float = 'left';
-        entryForm.appendChild(cancelButton);
-        saveButton = document.createElement('button');
-        saveButton.setAttribute('type','button');
-        saveButton.setAttribute('onclick','saveButtonClicked(this)');
-        saveButtonText = document.createTextNode('Save');
-        saveButton.appendChild(saveButtonText);
-        saveButton.style.float = 'right';
-        entryForm.appendChild(saveButton);
-        document.getElementById('editRegionContainer').appendChild(entryForm);
-    }
+	function clearEntryForm() {
+	    document.getElementById('entryFormTextArea').value = '';
+	    document.getElementById('entryFormTitleInput').value = '';
+	}
+	function focusHandler(focusElement) {
+	    console.log('focus handler');
+	    focusElement.style.borderColor = "#ff8888";
+	}
     function generalAjaxCall(params, destination){
 		// params is an array of key/value pairs to be sent in URL
 		// destination is the element id that displays returned data
@@ -157,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		}
 		xmlhttp.onreadystatechange=function()  {
 	  		if (xmlhttp.readyState==4 && xmlhttp.status==200)  {
-	  		    console.log(xmlhttp.responseText + ' back from server');
+	  		    //console.log(xmlhttp.responseText + ' back from server');
   		        var returnData =  eval('(' + xmlhttp.responseText + ')');
 	  		    //console.log(returnData.dataDestination + ' is data destination');
 	  		    switch (returnData.dataDestination) {
@@ -209,7 +166,104 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		//console.log('https://ajax.php' + requestParams);
 		xmlhttp.send();
 	}
-	function listItemClicked(listItem) {
+	function hideEntryForm() {
+	    document.getElementById('entryForm').style.display = 'none';
+	}
+    function initialize_page() {
+        var dataObject = new Object();
+        dataObject.action = 'get_templates';
+        serverQueue.push(dataObject);
+        serverQueue.push('listItemContainer');
+        checkServerQueue();
+        var dummy = document.createElement('div');
+        dummy.setAttribute('itemType','dummy');
+        buildBreadCrumbs(dummy);
+        addItemButton = document.createElement('button');
+        //var addItemButtonTextNode = document.createTextNode('Add');
+        var addItemImage = document.createElement('img');
+        addItemImage.setAttribute('src', 'images/plus_sign_23X21.gif');
+        addItemImage.setAttribute('width','23');
+        addItemImage.setAttribute('height','21');
+        addItemButton.appendChild(addItemImage);
+//        addItemButton.appendChild(addItemButtonTextNode);
+        addItemButton.setAttribute('id','addItemButton');
+        addItemButton.setAttribute('onclick','addItemButtonClicked(this)');
+        entryForm = document.createElement('div');
+        entryForm.setAttribute('id','entryForm');
+        entryFormTitleLabelDiv = document.createElement('div');
+        entryFormTitleLabel = document.createTextNode('Title');
+        entryFormTitleLabelDiv.appendChild(entryFormTitleLabel);
+        entryForm.appendChild(entryFormTitleLabelDiv);
+        entryFormTitleInput = document.createElement('input');
+        entryFormTitleInput.setAttribute('id', 'entryFormTitleInput');
+        entryFormTitleInput.setAttribute('type','text');
+        entryFormTitleInput.setAttribute('fieldname','template_title');
+        entryFormTitleInput.setAttribute('onkeypress','setFormDirty(this.parentNode)');
+        entryFormTitleInput.style.width = '100%';
+        entryForm.appendChild(entryFormTitleInput);
+        entryFormDescriptionLabelDiv = document.createElement('div');
+        entryFormDescriptionLabel = document.createTextNode('Description');
+        entryFormDescriptionLabelDiv.appendChild(entryFormDescriptionLabel);
+        entryForm.appendChild(entryFormDescriptionLabelDiv);
+        entryFormTextArea = document.createElement('textarea');
+        entryFormTextArea.setAttribute('id','entryFormTextArea');
+        entryFormTextArea.setAttribute('fieldname','template_description');
+        entryFormTextArea.setAttribute('onkeypress','setFormDirty(this.parentNode)');
+        entryFormTextArea.style.width = '100%';
+        entryFormTextArea.style.width = '100%';
+        entryForm.appendChild(entryFormTextArea);
+        cancelButton = document.createElement('button');
+        cancelButton.setAttribute('type','button');
+        cancelButton.setAttribute('onclick','cancelButtonClicked(this)');
+        cancelButtonText = document.createTextNode('Cancel');
+        cancelButton.appendChild(cancelButtonText);
+        cancelButton.style.float = 'left';
+        entryForm.appendChild(cancelButton);
+        saveButton = document.createElement('button');
+        saveButton.setAttribute('type','button');
+        saveButton.setAttribute('onclick','saveButtonClicked(this)');
+        saveButtonText = document.createTextNode('Save');
+        saveButton.appendChild(saveButtonText);
+        saveButton.style.float = 'right';
+        entryForm.appendChild(saveButton);
+        var brElement = document.createElement('br');
+        brElement.style.clear = 'both';
+        entryForm.appendChild(brElement);
+        var spacer = document.createElement('div');
+        spacer.style.clear = 'both';
+        var spacerContent = document.createTextNode('&nbsp;');
+        spacer.appendChild(spacerContent);
+        entryForm.appendChild(spacerContent);
+        document.getElementById('editRegionContainer').appendChild(entryForm);
+    }
+    function keystrokeHandler(ev) {
+        var keystroke = ev.which?ev.which:ev.keyCode;
+        console.log('keystroke is ' + keystroke);
+        switch (keystroke) {
+            case 38:
+                //up arrow
+                // set current focusElement to unselected
+                setUnselected();
+                focusElement = focusElement.previousSibling?focusElement.previousSibling:focusElement;
+                setSelected();
+                console.log('index is ' + focusElement.previousSibling);
+            break;
+            case 40:
+                setUnselected();
+                focusElement = focusElement.nextSibling?focusElement.nextSibling:focusElement;
+                setSelected();
+                break;
+                //down arrow
+            case 13:
+                // enter (return)
+                listItemSelected(focusElement);
+                break;
+            default:
+                // default statements
+        }
+    }
+    function listItemSelected(listItem) {
+        //called when Edit button is clicked, or item is double-clicked
 	    switch (listItem.getAttribute('itemtype')) {
       		case 'template':
                 var dataObject = new Object();
@@ -223,6 +277,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             default:
                 // default statements
         }
+	    console.log('list item selected');
+        
+    }
+	function listItemClicked(listItem) {
+	    var newFocusItem = listItem;
+	    // focusElement no longer the focus, so turn style off
+        setUnselected();
+	    focusElement = listItem;
+	    setSelected();
+	    console.log(focusElement.getAttribute('itemtype'));
+	    listItem.focus();
+	    console.log(document.activeElement);
 	    console.log('list item clicked');
 	}
 	function makeListItemElement(titleText, itemType) {
@@ -231,6 +297,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         listItemElement.setAttribute('itemtype',itemType);
         listItemElement.setAttribute('templateid', templateId);
         listItemElement.setAttribute('onclick','listItemClicked(this)');
+        listItemElement.setAttribute('tabindex', '0');
         var listItemTextNode = document.createTextNode(titleText);
         listItemElement.appendChild(listItemTextNode);
         return(listItemElement)
@@ -250,9 +317,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     	        listItemElement.setAttribute('itemtype',itemType);
     	        listItemElement.setAttribute('templateid', listItems[itemNum].template_id);
     	        listItemElement.setAttribute('onclick','listItemClicked(this)');
-    	        listItemElement.setAttribute('description',listItems[itemNum].description);
+                listItemElement.setAttribute('onfocus','focusHandler(this)');
+    	        listItemElement.setAttribute('description',listItems[itemNum].description + ' ');
     	        var listItemTextNode = document.createTextNode(listItems[itemNum].title);
     	        listItemElement.appendChild(listItemTextNode);
+    	        
     	        destination.appendChild(listItemElement);
     	    }
     	} else if (itemType == 'templateDetail') {
@@ -268,6 +337,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         addItemButton.setAttribute('itemtype',itemType);
 	    destination.appendChild(addItemButton);
+        var deleteItemImage = document.createElement('img');
+        deleteItemImage.setAttribute('src', 'images/minus_sign_23x21.gif');
+        deleteItemImage.setAttribute('width','23');
+        deleteItemImage.setAttribute('height','21');
+        deleteItemImage.setAttribute('align','right');
+        deleteItemImage.style.cursor = 'pointer';
+        destination.appendChild(deleteItemImage);
 	}
 	function resetData() {
         var dataObject = new Object();
@@ -316,6 +392,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	function setFormDirty(formDiv) {
 	    console.log('setting dirty');
 	    formDiv.style.backgroundColor = '#ffeeee';
+	}
+	function setSelected() {
+	    focusElement.style.backgroundColor = "#ffdddd";
+	}
+	function setUnselected() {
+	    focusElement.style.backgroundColor = "#ddffdd";
 	}
 	function showConfirmation() {
 	    document.getElementById('confirmationBox');
