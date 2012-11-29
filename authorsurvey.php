@@ -39,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     var serverQueue =  new Array();
     var addItemButton;
     var entryForm;
+    var saveButton;
     var confirmationBox;
     initialize_page();
     function addItemButtonClicked(buttonClicked) {
@@ -75,7 +76,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	    resetData();
 	}
     function cancelButtonClicked(buttonClicked) {
+        console.log('cancel clicked');
         showConfirmation();
+    }
+    function cancelConfirmation() {
+        hideConfirmation();
     }
     function clearEntryForm() {
         document.getElementById('entryForm').style.display = 'none';
@@ -93,6 +98,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	function clearEntryForm() {
 	    document.getElementById('entryFormTextArea').value = '';
 	    document.getElementById('entryFormTitleInput').value = '';
+	}
+	function confirmationTrue(yesButton) {
+	    console.log('go ahead');
+	}
+	function deleteItemClicked(buttonClicked) {
+	    console.log('delete item clicked');
+	    showConfirmationMessage();
 	}
 	function focusHandler(focusElement) {
 	    console.log('focus handler');
@@ -114,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		}
 		xmlhttp.onreadystatechange=function()  {
 	  		if (xmlhttp.readyState==4 && xmlhttp.status==200)  {
-	  		    //console.log(xmlhttp.responseText + ' back from server');
+	  		    console.log(xmlhttp.responseText + ' back from server');
   		        var returnData =  eval('(' + xmlhttp.responseText + ')');
 	  		    //console.log(returnData.dataDestination + ' is data destination');
 	  		    switch (returnData.dataDestination) {
@@ -165,6 +177,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		xmlhttp.open("GET","ajax.php" + requestParams,true);
 		//console.log('https://ajax.php' + requestParams);
 		xmlhttp.send();
+	}
+	function hideConfirmation() {
+	    document.getElementById('confirmationMessage').style.display = 'none';
+	    
 	}
 	function hideEntryForm() {
 	    document.getElementById('entryForm').style.display = 'none';
@@ -229,11 +245,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         var brElement = document.createElement('br');
         brElement.style.clear = 'both';
         entryForm.appendChild(brElement);
-        var spacer = document.createElement('div');
-        spacer.style.clear = 'both';
-        var spacerContent = document.createTextNode('&nbsp;');
-        spacer.appendChild(spacerContent);
-        entryForm.appendChild(spacerContent);
+        confirmationBox = document.createElement('div');
+        confirmationBox.setAttribute('id','confirmationMessage');
+        var messageDiv = document.createElement('div');
+        var messageText = document.createTextNode('Confirm?');
+        messageDiv.appendChild(messageText);
+        confirmationBox.appendChild(messageDiv);
+        var yesButton = document.createElement('button');
+        yesButton.setAttribute('onclick','confirmationTrue(this)');
+        var noButton = document.createElement('button');
+        noButton.setAttribute('onclick','cancelConfirmation(this)');
+        var yesText = document.createTextNode('Yes');
+        var noText = document.createTextNode('No');
+        yesButton.appendChild(yesText);
+        noButton.appendChild(noText);
+        confirmationBox.appendChild(yesButton);
+        confirmationBox.appendChild(noButton);
+        confirmationBox.style.display = 'none';
+        document.getElementById('editRegionContainer').appendChild(confirmationBox);
+        //var spacer = document.createElement('div');
+        //spacer.style.clear = 'both';
+        //var spacerContent = document.createTextNode('');
+        //spacer.appendChild(spacerContent);
+        //entryForm.appendChild(spacerContent);
         document.getElementById('editRegionContainer').appendChild(entryForm);
     }
     function keystrokeHandler(ev) {
@@ -262,6 +296,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // default statements
         }
     }
+    function listItemDblClick(listItem) {
+        setUnselected();
+        focusElement = listItem;
+        setSelected();
+        listItemSelected(listItem);
+    }
     function listItemSelected(listItem) {
         //called when Edit button is clicked, or item is double-clicked
 	    switch (listItem.getAttribute('itemtype')) {
@@ -282,14 +322,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 	function listItemClicked(listItem) {
 	    var newFocusItem = listItem;
+	    console.log('list item clicked');
 	    // focusElement no longer the focus, so turn style off
         setUnselected();
-	    focusElement = listItem;
+	    focusElement = newFocusItem;
 	    setSelected();
-	    console.log(focusElement.getAttribute('itemtype'));
-	    listItem.focus();
-	    console.log(document.activeElement);
-	    console.log('list item clicked');
 	}
 	function makeListItemElement(titleText, itemType) {
         var listItemElement = document.createElement('div');
@@ -305,6 +342,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	function populateEntryForm(entryItem) {
 	    document.getElementById('entryFormTitleInput').value = entryItem.childNodes[0].nodeValue;
 	    document.getElementById('entryFormTextArea').value = entryItem.getAttribute('description');
+	    document.getElementById('entryForm').setAttribute('itemid',entryItem.getAttribute('templateid'));
 	    setFormClean(document.getElementById('entryForm'));
 	}
 	function populateListItemContainer(listItems, itemType) {
@@ -316,8 +354,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     	        listItemElement.className = 'listItemDiv';
     	        listItemElement.setAttribute('itemtype',itemType);
     	        listItemElement.setAttribute('templateid', listItems[itemNum].template_id);
-    	        listItemElement.setAttribute('onclick','listItemClicked(this)');
-                listItemElement.setAttribute('onfocus','focusHandler(this)');
+    	        listItemElement.setAttribute('onclick', 'listItemClicked(this);');
+                listItemElement.setAttribute('ondblclick', "listItemDblClick(this);");
     	        listItemElement.setAttribute('description',listItems[itemNum].description + ' ');
     	        var listItemTextNode = document.createTextNode(listItems[itemNum].title);
     	        listItemElement.appendChild(listItemTextNode);
@@ -337,6 +375,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         addItemButton.setAttribute('itemtype',itemType);
 	    destination.appendChild(addItemButton);
+	    var deleteItemButton = document.createElement('button');
+	    deleteItemButton.setAttribute('onclick','deleteItemClicked(this)');
         var deleteItemImage = document.createElement('img');
         deleteItemImage.setAttribute('src', 'images/minus_sign_23x21.gif');
         deleteItemImage.setAttribute('width','23');
@@ -359,11 +399,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	    var dataObject = scrapeForm(buttonClicked.parentNode);
 	    dataObject.template_id = buttonClicked.parentNode.getAttribute('itemid');
 	    dataObject.action = 'savetemplate';
-	    console.log('dataObject title is ' + dataObject.template_title);
-      serverQueue.push(dataObject);
-      serverQueue.push('insertdata');
-      checkServerQueue();
+	    //console.log('dataObject title is ' + dataObject.template_title);
+        serverQueue.push(dataObject);
+        serverQueue.push('insertdata');
+        checkServerQueue();
+        setFormClean();
 	}
+	
 	function scrapeForm(formItem) {
 	    var dataObject = new Object();
 	    for (i = 0; i < formItem.childNodes.length; i++) {
@@ -387,10 +429,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	}
 	function setFormClean(formDiv) {
 	    console.log('setting clean');
+	    saveButton.style.display = 'none';
 	    formDiv.style.backgroundColor = '#eeffee';
 	}
 	function setFormDirty(formDiv) {
 	    console.log('setting dirty');
+	    saveButton.style.display = 'block';
 	    formDiv.style.backgroundColor = '#ffeeee';
 	}
 	function setSelected() {
@@ -400,7 +444,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	    focusElement.style.backgroundColor = "#ddffdd";
 	}
 	function showConfirmation() {
-	    document.getElementById('confirmationBox');
+	    document.getElementById('confirmationMessage').style.display = 'block';
+	    
 	}
 	function showEntryForm() {
 	    entryForm.style.display = 'block';
@@ -446,6 +491,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	#confirmationMessage {
 		position:absolute;
 		background-color:#ffd;
+		font-family:sans;
+		font-size:14px;
+		font-weight:bold;
 		padding:30px;
 		width:150px;
 		height:100px;

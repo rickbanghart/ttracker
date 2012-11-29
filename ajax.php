@@ -14,13 +14,14 @@ $examinee_id;
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //echo 'POST ';
 	foreach ($_POST as $key=>$value) {
-	    echo 'a key is ' . $key;
+	    //echo 'a key is ' . $key;
 		$$key = $value;
 	}
 } else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     //echo 'GET';
 	foreach ($_GET as $key=>$value) {
 		$$key = $value;
+		//echo $key . ' is ' . $value . ' ';
 	}
 }
 //echo $action;
@@ -35,6 +36,10 @@ switch ($action) {
 		break;
 	case 'get_survey':
 		get_survey();
+		break;
+	case 'savetemplate':
+		save_template();
+		
 		break;
 	case 'get_surveys':
 		get_surveys();
@@ -447,6 +452,30 @@ function mark_complete() {
 		echo '<return>fail</return>';
 	}
 }
+function save_template() {
+    global $conn;
+    global $template_title;
+    global $template_description;
+    global $template_id;
+    $returnData['status'] = 'success';
+    // echo 'sending to description ' . $template_description;
+    $query_params = array($template_title, $template_description, $template_id);
+	$qry = "{call dbo.sp_save_template(?,?,?)}";
+	$rst = sqlsrv_query($conn, $qry, $query_params);
+      if( ($errors = sqlsrv_errors() ) != null)
+      {
+         foreach( $errors as $error)
+         {
+            echo "SQLSTATE: ".$error[ 'SQLSTATE']."\n";
+            echo "code: ".$error[ 'code']."\n";
+            echo "message: ".$error[ 'message']."\n";
+         }
+      }
+	//echo 'returned from query was ' . $rst;
+	$row = sqlsrv_fetch_object($rst);
+	echo(json_encode($returnData));
+	//echo 'from server is: ' . $row->id_value;
+}
 function save_selection() {
 	global $conn;
 	global $instance_id;
@@ -477,6 +506,7 @@ function save_selection() {
 	echo "examinee: $examinee_id , examiner: $examiner_id, instance: $instance_id, item: $item_id; option: $option_id, strength: $strength, weakness: $weakness";
 	 
 }
+
 function sql_errors_display () {
 	if( ($errors = sqlsrv_errors() ) != null) {
          foreach( $errors as $error)
