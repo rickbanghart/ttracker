@@ -37,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     var focusElement = document.createElement('div');
     var templateId;
     var serverQueue =  new Array();
+    var confirmationObject = new Object();
     var addItemButton;
     var entryForm;
     var saveButton;
@@ -100,11 +101,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	    document.getElementById('entryFormTitleInput').value = '';
 	}
 	function confirmationTrue(yesButton) {
+	    deleteItemConfirmed();
 	    console.log('go ahead');
 	}
 	function deleteItemClicked(buttonClicked) {
 	    console.log('delete item clicked');
-	    showConfirmationMessage();
+	    confirmationObject.item = focusElement;
+	    confirmationObject.action = 'delete';
+	    showConfirmation();
+	}
+	function deleteItemConfirmed() {
+	    var dataObject = new Object();
+	    dataObject.action = 'deletetemplate';
+	    dataObject.template_id = focusElement.getAttribute('templateid');
+	    console.log(dataObject.template_id + ' is the template id');
+	    generalAjaxCall(dataObject,'update');
 	}
 	function focusHandler(focusElement) {
 	    console.log('focus handler');
@@ -135,6 +146,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	      		        populateListItemContainer(listItems, 'template');
                          // statements
                     break;
+                    case 'update':
+                        console.log('back from update');
+                        break;
                     case 'templateDetail':
                         console.log('got templateDetail');
                         var listItems = returnData.dataObject;
@@ -272,7 +286,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     function keystrokeHandler(ev) {
         var keystroke = ev.which?ev.which:ev.keyCode;
-        console.log('keystroke is ' + keystroke);
+        //console.log('keystroke is ' + keystroke);
         switch (keystroke) {
             case 38:
                 //up arrow
@@ -381,9 +395,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         deleteItemImage.setAttribute('src', 'images/minus_sign_23x21.gif');
         deleteItemImage.setAttribute('width','23');
         deleteItemImage.setAttribute('height','21');
-        deleteItemImage.setAttribute('align','right');
+        deleteItemButton.setAttribute('align','right');
         deleteItemImage.style.cursor = 'pointer';
-        destination.appendChild(deleteItemImage);
+        deleteItemButton.appendChild(deleteItemImage);
+        destination.appendChild(deleteItemButton);
 	}
 	function resetData() {
         var dataObject = new Object();
@@ -403,7 +418,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         serverQueue.push(dataObject);
         serverQueue.push('insertdata');
         checkServerQueue();
-        setFormClean();
+        setFormClean(buttonClicked.parentNode);
 	}
 	
 	function scrapeForm(formItem) {

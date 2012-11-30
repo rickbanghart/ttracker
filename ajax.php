@@ -28,6 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 //die;
 switch ($action) {
 	//echo 'should get templates';
+	case 'deletetemplate':
+	    delete_template();
+	    break;
 	case 'get_assignments':
 		get_assignments();
 		break;
@@ -58,6 +61,15 @@ switch ($action) {
 		break;
     default:
         echo "fell through switch with action = $action";		
+}
+function delete_template() {
+    global $conn;
+    global $template_id;
+    $qry = "{call dbo.sp_delete_template(?)}";
+    $params = array($template_id);
+    $rst = sqlsrv_query($conn, $qry, $params);
+	$returnData['dataDestination'] = 'update';
+    echo(json_encode($returnData));
 }
 function get_assignments() {
 	global $conn;
