@@ -200,13 +200,54 @@ function get_template_detail() {
     $templateObject['template_id'] = $firstRow['template_id'];
     $templateObject['template_title'] = $firstRow['template_title'];
     $templateObject['template_description'] = $firstRow['template_description'];
+    $current_cluster = 0;
+    $current_item = 0;
+    $item_count = 0;
+    $cluster_count = 0;
+    $in_cluster = 0;
+    $in_item = 0;
     for ($row = 0; $row < count($templateDetails); $row++) {
-          if ($templateDetails[0]['cluster_id']) {
-            echo 'found a cluster';
-          }
+        if ($templateDetails[$row]['cluster_id'] &&($current_cluster != $templateDetails[$row]['cluster_id'])) {
+            // new (or first) cluster
+            $cluster_count ++;
+            if ($in_cluster == 1) {
+                // we have an existing cluster, so save it to clusters[]
+                if ($in_item == 1) {
+                    $items[] = $item_object;
+                    $in_item = 0;
+                }
+                $clusterObject['items'] = $items;
+                $clusters[] = $clusterObject;
+                // and initialize variables to create new cluster
+                $clusterObject = array();
+                $items = array();
+                $item_count = 0;
+            }
+            $current_cluster = $templateDetails[$row]['cluster_id'];
+            $clusterObject['cluster_id'] = $templateDetails[$row]['cluster_id'];
+            $clusterObject['cluster_header'] = $templateDetails[$row]['cluster_header'];
+            if ($templateDetails[$row]['item_id'] && ($current_item != $templateDetails[$row]['item_id'])) {
+                $item_count ++;
+                if ($in_item == 1) {
+                    $items[] = $item_object;
+                }
+            }
+            
+        }
+    }
+    if ($cluster_count >  0) {
+        if ($in_item == 1) {
+            $items[] = $item_object;
+        }
+        if ($item_count > 0) {
+            $clusterObject['items'] = $items;
+        }
+        $clusters[] = $clusterObject;
+        $templateObject['clusters'] = $clusters;
     }
     $returnData['dataDestination'] = 'templateDetail';
     $returnData['dataObject'] = $templateObject;
+    //echo phpinfo();
     echo(json_encode($returnData));
 }
 function get_survey_display_framework() { ?>

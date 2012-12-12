@@ -29,7 +29,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div id="statusMessage"></div>
         <div id="breadCrumbContainer"></div>
         <div id="editRegionContainer"></div>
-        <div id="listItemContainer"></div>
+        <div id="listContainer">
+            <div id="listHeader">List Header</div>
+            <div id="listItemContainer"></div>
+        </div>
     </div>
 </body>
 <script type="text/javascript">
@@ -82,9 +85,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     function cancelConfirmation() {
         hideConfirmation();
-    }
-    function clearEntryForm() {
-        document.getElementById('entryForm').style.display = 'none';
     }
 	function checkServerQueue() {
 		if (serverQueue.length > 0) {
@@ -329,9 +329,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 populateEntryForm(listItem);
             break;
             default:
+                console.log('fell through listItemSelected switch with itemtype = ' + listItem.getAttribute('itemtype'));
                 // default statements
         }
-	    console.log('list item selected');
         
     }
 	function listItemClicked(listItem) {
@@ -362,6 +362,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	function populateListItemContainer(listItems, itemType) {
 	    var destination = document.getElementById('listItemContainer');
 	    destination.innerHTML = '';
+	    document.getElementById('listHeader').innerHTML = itemType;
 	    if (itemType == 'template') {
     	    for (var itemNum = 0; itemNum < listItems.length; itemNum ++) {
     	        var listItemElement = document.createElement('div');
@@ -549,7 +550,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	div.listItemDiv:hover {
 	    background-color:#dde;
 	}
-	#listItemContainer {
+	#listContainer {
 	    width:22%;
 	    height:100%;
 	    display:block;
@@ -557,6 +558,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	    border: 1px solid #888;
 	    border-radius:10px;
 	    background-color:#efe;
+	}
+	#listItemContainer {
+	    
+	    display:block;
 	}
     #statusMessage {
         position:absolute;
