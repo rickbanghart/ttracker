@@ -41,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     var templateId;
     var serverQueue =  new Array();
     var confirmationObject = new Object();
+    var templateObject = new Object();
     var addItemButton;
     var entryForm;
     var saveButton;
@@ -137,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		}
 		xmlhttp.onreadystatechange=function()  {
 	  		if (xmlhttp.readyState==4 && xmlhttp.status==200)  {
-	  		    console.log(xmlhttp.responseText + ' back from server');
+	  		    //console.log(xmlhttp.responseText + ' back from server');
   		        var returnData =  eval('(' + xmlhttp.responseText + ')');
 	  		    //console.log(returnData.dataDestination + ' is data destination');
 	  		    switch (returnData.dataDestination) {
@@ -151,8 +152,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         break;
                     case 'templateDetail':
                         console.log('got templateDetail');
-                        var listItems = returnData.dataObject;
-                        populateListItemContainer(listItems, 'templateDetail');
+                        templateObject = returnData.dataObject;
+                        listItems = templateObject.clusters;
+                        populateListItemContainer(listItems, 'cluster');
                     break;
                     default:
                         // default statements
@@ -310,6 +312,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // default statements
         }
     }
+    function logObject(object) {
+        for (property in object) {
+            console.log(property + ': ' + object[property]+'; ');
+        }
+    }
     function listItemDblClick(listItem) {
         setUnselected();
         focusElement = listItem;
@@ -377,15 +384,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     	        
     	        destination.appendChild(listItemElement);
     	    }
+    	} else if (itemType == 'cluster') {
+    	    console.log('doing clusters, count: ' + listItems.length);
+    	    for (clusterNum = 0;clusterNum < listItems.length;clusterNum ++) {
+                 var listItemElement = makeListItemElement(listItems[clusterNum].cluster_header, 'cluster');
+                 destination.appendChild(listItemElement);
+    	         console.log(listItems[clusterNum].cluster_header);
+    	    }
     	} else if (itemType == 'templateDetail') {
             // looking for clusters
-            var clusters = listItems.clusters;
-            if (clusters) {
-                for (clusterNum = 0; clusterNum < clusters.length; clusterNum++) {
-                     var listItemElement = makeListItemElement('title here', 'cluster');
-                     destination.appendChild(listItemElement);
-                }
-            }
             showEntryForm();
         }
         addItemButton.setAttribute('itemtype',itemType);

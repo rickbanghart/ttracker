@@ -206,6 +206,8 @@ function get_template_detail() {
     $cluster_count = 0;
     $in_cluster = 0;
     $in_item = 0;
+    $current_option = 0;
+    $option_count = 0;
     for ($row = 0; $row < count($templateDetails); $row++) {
         if ($templateDetails[$row]['cluster_id'] &&($current_cluster != $templateDetails[$row]['cluster_id'])) {
             // new (or first) cluster
@@ -213,6 +215,7 @@ function get_template_detail() {
             if ($in_cluster == 1) {
                 // we have an existing cluster, so save it to clusters[]
                 if ($in_item == 1) {
+                    $item_object['options'] = $options;
                     $items[] = $item_object;
                     $in_item = 0;
                 }
@@ -223,20 +226,41 @@ function get_template_detail() {
                 $items = array();
                 $item_count = 0;
             }
+            $in_cluster = 1;
             $current_cluster = $templateDetails[$row]['cluster_id'];
             $clusterObject['cluster_id'] = $templateDetails[$row]['cluster_id'];
             $clusterObject['cluster_header'] = $templateDetails[$row]['cluster_header'];
-            if ($templateDetails[$row]['item_id'] && ($current_item != $templateDetails[$row]['item_id'])) {
-                $item_count ++;
-                if ($in_item == 1) {
-                    $items[] = $item_object;
-                }
+        }
+        if ($templateDetails[$row]['item_id'] && ($current_item != $templateDetails[$row]['item_id'])) {
+            $item_count ++;
+            $current_item = $templateDetails[$row]['item_id'];
+            if ($in_item == 1) {
+                $item_object['options'] = $options;
+                $items[] = $item_object;
+                $item_object = array();
             }
-            
+            $option_count = 0;
+            $options = array();
+            $optionObject = array();
+            $item_object['item_id'] = $templateDetails[$row]['item_id'];
+            $item_object['item_prompt'] = $templateDetails[$row]['item_prompt'];
+            $item_object['item_description'] = $templateDetails[$row]['item_description'];
+            $in_item = 1;
+        }
+        if ($templateDetails[$row]['option_id'] && ($current_option != $templateDetails[$row]['option_id'])) {
+            $option_count ++;
+            $optionObject['option_id'] = $templateDetails[$row]['option_id'];
+            $optionObject['option_numeric_value'] = $templateDetails[$row]['option_numeric_value'];
+            $optionObject['option_text_value'] = $templateDetails[$row]['option_text_value'];
+            $optionObject['option_type'] = $templateDetails[$row]['option_type'];
+            $optionObject['option_label'] = $templateDetails[$row]['option_label'];
+            $optionObject['option_description'] = $templateDetails[$row]['option_description'];
+            $options[] = $optionObject;
         }
     }
     if ($cluster_count >  0) {
         if ($in_item == 1) {
+            $item_object['options'] = $options;
             $items[] = $item_object;
         }
         if ($item_count > 0) {
