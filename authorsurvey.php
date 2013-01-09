@@ -102,6 +102,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	    document.getElementById('entryFormTextArea').value = '';
 	    document.getElementById('entryFormTitleInput').value = '';
 	}
+	function clusterClickHandler() {
+	    console.log('cluster clicked');
+	}
 	function confirmationTrue(yesButton) {
 	    deleteItemConfirmed();
 	    console.log('go ahead');
@@ -419,8 +422,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	function renderCluster(clusterObj) {
 	    var editRegion = document.getElementById('editRegionContainer');
         var clusterDiv = document.createElement('div');
-        var clusterTitleDiv = document.createElement('div');
+        var clusterHeaderDiv = document.createElement('div');
+        clusterDiv.setAttribute('class','clusterHeader');
+        clusterDiv.setAttribute('onClick', 'clusterClickHandler()');
         var clusterTitleText = document.createTextNode(clusterObj.cluster_header);
+        clusterHeaderDiv.appendChild(clusterTitleText);
+        clusterDiv.appendChild(clusterHeaderDiv);
         if (clusterObj.hasOwnProperty('clusters')) {
             
             console.log(clusterObj.clusters.length + ' clusters in cluster');
@@ -429,28 +436,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         if (clusterObj.hasOwnProperty('items')) {
             for (itemNum = 0; itemNum < clusterObj.items.length; itemNum++) {
-                renderItem(clusterObj.items[itemNum]);
+                renderItem(clusterObj.items[itemNum], clusterDiv);
             }
             console.log(clusterObj.items.length + ' items in cluster');
         } else {
             console.log('no items here');
         }
-        clusterTitleDiv.appendChild(clusterTitleText);
-        clusterDiv.appendChild(clusterTitleDiv);
         editRegion.appendChild(clusterDiv);
 	}
-	function renderItem(itemObj) {
+	function renderItem(itemObj, clusterDiv) {
 	    var editRegion = document.getElementById('editRegionContainer');
 	    var itemDiv = document.createElement('div');
+	    itemDiv.setAttribute('class','templateItem');
 	    var itemPrompt = document.createTextNode(itemObj.item_prompt);
 	    itemDiv.appendChild(itemPrompt);
-	    editRegion.appendChild(itemDiv);
+	    clusterDiv.appendChild(itemDiv);
 	    if (itemObj.hasOwnProperty('options')) {
 	        for (optionNum = 0; optionNum < itemObj.options.length; optionNum++) {
                 var optionDiv = document.createElement('div');
                 var optionLabel = document.createTextNode(itemObj.options[optionNum].option_label);
                 optionDiv.appendChild(optionLabel);
-                editRegion.appendChild(optionDiv);
+                clusterDiv.appendChild(optionDiv);
             }
 	    } else {
 	        console.log('item has no options');
@@ -461,10 +467,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         console.log(templateObject.template_title + ' is the template title');
         var editRegion = document.getElementById('editRegionContainer');
         var templateTitleDiv = document.createElement('div');
+        templateTitleDiv.setAttribute('class','templateTitle');
         var templateTitleText = document.createTextNode(templateObject.template_title);
         templateTitleDiv.appendChild(templateTitleText);
         editRegion.appendChild(templateTitleDiv);
         var templateDescriptionDiv = document.createElement('div');
+        templateDescriptionDiv.setAttribute('class','templateDescription');
         var templateDescriptionText = document.createTextNode(templateObject.template_description);
         templateDescriptionDiv.appendChild(templateDescriptionText);
         editRegion.appendChild(templateDescriptionDiv);
@@ -622,6 +630,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		}
 		div.listItemDiv:hover {
 		    background-color:#dde;
+		}
+		div.clusterHeader {
+		    background-color:#F7FDC6;
+		    padding: 3px 3px 3px 3px;
+		    border: 1px solid #fff;
+		}
+		div.templateDescription {
+		    background-color:#cbe7d7;
+		    padding: 3px 3px 3px 3px;
+		    border: 1px solid #000;
+		}
+		div.templateItem {
+		    background-color:#CBC9FA;
+		    padding: 3px 3px 3px 3px;
+		    border: 1px solid #000;
+		}
+		div.templateTitle {
+		    background-color:#CBE7D7;
+		    padding-left:3px;
+		    padding-top:3px;
 		}
 		#listContainer {
 		    width:22%;
