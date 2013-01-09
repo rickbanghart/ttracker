@@ -37,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </body>
 <script type="text/javascript">
     var ELEMENT_NODE = 1;
+    var latestServerReturn = '';
     var focusElement = document.createElement('div');
     var templateId;
     var serverQueue =  new Array();
@@ -139,6 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		xmlhttp.onreadystatechange=function()  {
 	  		if (xmlhttp.readyState==4 && xmlhttp.status==200)  {
 	  		    //console.log(xmlhttp.responseText + ' back from server');
+	  		    latestServerReturn = xmlhttp.responseText;
   		        var returnData =  eval('(' + xmlhttp.responseText + ')');
 	  		    //console.log(returnData.dataDestination + ' is data destination');
 	  		    switch (returnData.dataDestination) {
@@ -151,10 +153,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         console.log('back from update');
                         break;
                     case 'templateDetail':
-                        console.log('got templateDetail');
                         templateObject = returnData.dataObject;
                         listItems = templateObject.clusters;
-                        populateListItemContainer(listItems, 'cluster');
+                        //populateListItemContainer(listItems, 'cluster');
+                        renderTemplate();
                     break;
                     default:
                         // default statements
@@ -327,14 +329,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         //called when Edit button is clicked, or item is double-clicked
 	    switch (listItem.getAttribute('itemtype')) {
       		case 'template':
+                //populateEntryForm(listItem);
                 var dataObject = new Object();
                 dataObject.action = 'gettemplatedetail';
                 dataObject.templateid = listItem.getAttribute('templateid');
                 serverQueue.push(dataObject, 'listItemContainer');
                 checkServerQueue();
                 buildBreadCrumbs(listItem);
-                populateEntryForm(listItem);
             break;
+       		case 'cluster':
+       			// need to display title 
+       			console.log('handling cluster');
+       			populateEntryForm(listItem);
+       					
             default:
                 console.log('fell through listItemSelected switch with itemtype = ' + listItem.getAttribute('itemtype'));
                 // default statements
@@ -345,7 +352,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	    var newFocusItem = listItem;
 	    console.log('list item clicked');
 	    // focusElement no longer the focus, so turn style off
-        setUnselected();
+      setUnselected();
 	    focusElement = newFocusItem;
 	    setSelected();
 	}
@@ -365,6 +372,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	    document.getElementById('entryFormTextArea').value = entryItem.getAttribute('description');
 	    document.getElementById('entryForm').setAttribute('itemid',entryItem.getAttribute('templateid'));
 	    setFormClean(document.getElementById('entryForm'));
+	    showEntryForm();
 	}
 	function populateListItemContainer(listItems, itemType) {
 	    var destination = document.getElementById('listItemContainer');
@@ -377,7 +385,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     	        listItemElement.setAttribute('itemtype',itemType);
     	        listItemElement.setAttribute('templateid', listItems[itemNum].template_id);
     	        listItemElement.setAttribute('onclick', 'listItemClicked(this);');
-                listItemElement.setAttribute('ondblclick', "listItemDblClick(this);");
+              listItemElement.setAttribute('ondblclick', "listItemDblClick(this);");
     	        listItemElement.setAttribute('description',listItems[itemNum].description + ' ');
     	        var listItemTextNode = document.createTextNode(listItems[itemNum].title);
     	        listItemElement.appendChild(listItemTextNode);
@@ -408,6 +416,64 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         deleteItemButton.appendChild(deleteItemImage);
         destination.appendChild(deleteItemButton);
 	}
+	function renderCluster(clusterObj) {
+	    var editRegion = document.getElementById('editRegionContainer');
+        var clusterDiv = document.createElement('div');
+        var clusterTitleDiv = document.createElement('div');
+        var clusterTitleText = document.createTextNode(clusterObj.cluster_header);
+        if (clusterObj.hasOwnProperty('clusters')) {
+            
+            console.log(clusterObj.clusters.length + ' clusters in cluster');
+        } else {
+            console.log('no clusters here');
+        }
+        if (clusterObj.hasOwnProperty('items')) {
+            for (itemNum = 0; itemNum < clusterObj.items.length; itemNum++) {
+                renderItem(clusterObj.items[itemNum]);
+            }
+            console.log(clusterObj.items.length + ' items in cluster');
+        } else {
+            console.log('no items here');
+        }
+        clusterTitleDiv.appendChild(clusterTitleText);
+        clusterDiv.appendChild(clusterTitleDiv);
+        editRegion.appendChild(clusterDiv);
+	}
+	function renderItem(itemObj) {
+	    var editRegion = document.getElementById('editRegionContainer');
+	    var itemDiv = document.createElement('div');
+	    var itemPrompt = document.createTextNode(itemObj.item_prompt);
+	    itemDiv.appendChild(itemPrompt);
+	    editRegion.appendChild(itemDiv);
+	    if (itemObj.hasOwnProperty('options')) {
+	        for (optionNum = 0; optionNum < itemObj.options.length; optionNum++) {
+                var optionDiv = document.createElement('div');
+                var optionLabel = document.createTextNode(itemObj.options[optionNum].option_label);
+                optionDiv.appendChild(optionLabel);
+                editRegion.appendChild(optionDiv);
+            }
+	    } else {
+	        console.log('item has no options');
+	    }
+	}
+    function renderTemplate() {
+        console.log('rendering template');
+        console.log(templateObject.template_title + ' is the template title');
+        var editRegion = document.getElementById('editRegionContainer');
+        var templateTitleDiv = document.createElement('div');
+        var templateTitleText = document.createTextNode(templateObject.template_title);
+        templateTitleDiv.appendChild(templateTitleText);
+        editRegion.appendChild(templateTitleDiv);
+        var templateDescriptionDiv = document.createElement('div');
+        var templateDescriptionText = document.createTextNode(templateObject.template_description);
+        templateDescriptionDiv.appendChild(templateDescriptionText);
+        editRegion.appendChild(templateDescriptionDiv);
+        var clusterList = templateObject.clusters;
+        console.log(latestServerReturn + ' was from server');
+        for (var clusterNum = 0;clusterNum < clusterList.length;clusterNum ++) {
+            renderCluster(clusterList[clusterNum]);
+        }
+    }
 	function resetData() {
         var dataObject = new Object();
         dataObject.action = 'get_templates';
@@ -511,7 +577,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         border: 1px solid #888;
         border-radius: 10px;
     }
-	#confirmationMessage {
+		#confirmationMessage {
 		position:absolute;
 		background-color:#ffd;
 		font-family:sans;
@@ -527,49 +593,49 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		left:250px;
 		top:190px;
 		display:block;
-	}
-	#editRegionContainer {
-	    width:75%;
-	    height:100%;
-        display:block;
-	    border: 1px solid #888;
-	    border-radius:10px;
-	    background-color:#fee;
-	    float:left;
-	}
-	#entryForm {
-	    width:450px;
-	    padding:4px;
-	    border: 1px solid #888;
-	    border-radius:10px;
-	    display:none;
-	    background-color:#eee;
-	}
-	div.listItemDiv {
-	    width:95%;
-	    cursor:pointer;
-	    padding:3px;
-	    margin:3px;
-	    background-color:#bbc;
-	    border: 1px solid #99a;
-	    border-radius:3px;
-	}
-	div.listItemDiv:hover {
-	    background-color:#dde;
-	}
-	#listContainer {
-	    width:22%;
-	    height:100%;
-	    display:block;
-	    float:right;
-	    border: 1px solid #888;
-	    border-radius:10px;
-	    background-color:#efe;
-	}
-	#listItemContainer {
-	    
-	    display:block;
-	}
+		}
+		#editRegionContainer {
+		    width:75%;
+		    height:100%;
+	        display:block;
+		    border: 1px solid #888;
+		    border-radius:10px;
+		    background-color:#fee;
+		    float:left;
+		}
+		#entryForm {
+		    width:85%;
+		    padding:4px;
+		    border: 1px solid #888;
+		    border-radius:10px;
+		    display:none;
+		    background-color:#eee;
+		}
+		div.listItemDiv {
+		    width:95%;
+		    cursor:pointer;
+		    padding:3px;
+		    margin:3px;
+		    background-color:#bbc;
+		    border: 1px solid #99a;
+		    border-radius:3px;
+		}
+		div.listItemDiv:hover {
+		    background-color:#dde;
+		}
+		#listContainer {
+		    width:22%;
+		    height:100%;
+		    display:block;
+		    float:right;
+		    border: 1px solid #888;
+		    border-radius:10px;
+		    background-color:#efe;
+		}
+		#listItemContainer {
+		    
+		    display:block;
+		}
     #statusMessage {
         position:absolute;
         top:100px;
