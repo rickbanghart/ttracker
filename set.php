@@ -26,7 +26,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Set Form</title>
 </head>
-
+<script type="text/javascript">
+	function submitForm(buttonClicked) {
+		alert("Found it");
+		console.log("submit clicked");
+	}
+		
+</script>
 <body>
 	<div class="pageWrapper">
 	<div class="questionGroup">
@@ -457,6 +463,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	<div class="instrumentItem">
 		<div class="itemPrompt">Other comments</div>
 	</div>
+	</div>
+	<div class="buttonPanel">
+		<input type="button" value="submit" onclick="submitForm(this)" />
 	</div>
 </div>
 </body>
