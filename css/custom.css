@@ -1,0 +1,509 @@
+.clear {
+	clear: both;
+}
+ul.nav {
+	list-style: none;
+	width: 80%;
+	overflow:hidden;
+	border-top: 1px solid #666; 
+	padding: 0px;
+	margin: 0px;
+}
+ul.nav li {
+	border-bottom: 1px solid #666;}
+ul.nav a, ul.nav a:visited {
+	padding: 5px 0 5px 10px;
+	overflow:hidden; 
+	width: 80%; 
+	display: block; 
+	background: #C6D580;
+	text-decoration:none;
+}
+ul.nav a:hover, ul.nav a:active, ul.nav a:focus {
+	background: #ADB96E; 
+	color: #FFF;
+}
+
+.aForm p, .cForm p, .tForm p, .lForm p, .wForm p, .dForm p {
+	clear: both;
+}
+.cForm label, .aForm label, .tForm label, .lForm label, .wForm label, .dForm label {
+	float: left; 
+	padding: 0 2px; 
+	margin: 0 5px 0 0; 
+	text-align: right;
+}
+.aForm label {
+	width: 225px;
+}
+.cForm input, .cForm textarea, .aForm input, .aForm textarea, .dForm input, .dForm textarea {
+	width: 250px;
+}
+.cForm label, .dForm label {
+	width: 175px;
+}
+.tForm label, .lForm label {
+	width: 150px; font-weight: bold;
+}
+.wForm label {
+	width: 150px;
+}
+.wForm input, .wForm textarea {
+	width: 400px;
+}
+.smt {
+	margin-left: 150px;
+}
+.smt2 {
+	margin-left: 275px;
+}
+.hide {
+	visibility: hidden;
+}
+.even, .odd{
+	border-bottom: 1pt dashed #221E1F;
+	font-size: 12pt;
+	padding: 5px;
+	height: 30px;
+}
+.odd{
+	background: #e7e9ef;
+}
+.even input, .odd input, .even, .odd{
+	font-size: small;
+}
+/*.even span, .odd span{
+	display: block;
+}
+#role{
+	display: inline;
+}*/
+.subNav span{
+	padding: 3px;
+	cursor: pointer;
+}
+.dLink{
+	background: #C6D580;
+}
+.cLink{
+	background: #ADB96E; 
+	color: #fff;
+}
+.subNav {
+	background: #eadcae; 
+	padding: 5px;
+	margin-bottom: 0px;
+}
+.subSubNav span{
+	padding: 3px;
+	cursor: pointer;
+}
+.subdLink{
+	background: #C6D580;
+}
+.subcLink{
+	background: #ADB96E; 
+	color: #fff;
+}
+.subSubNav {
+	background: #eadcae; 
+	padding: 5px;
+	margin-bottom: 0px;
+}
+#name, #role, #function{
+	display: block;
+	float: left;
+	padding: 5px;
+	width: 28%;
+	height: 30px;
+}
+/* Rick's stuff for Admin */
+.titleContainer {
+	background-color: #B7D8B8;
+	overflow: hidden;
+	height: 90px;
+	width: 640px;
+	display: block;
+}
+.progressContainer {
+	background-color:#FFDAC2;
+	display: block;
+	width: 640px;
+	height: 40px;
+}
+.promptContainer {
+	background-color:#F5C9D3;
+	display:block;
+	width:640px;
+	height:100px;
+	overflow:hidden;
+	
+}
+.surveyFooter {
+	width:500px;
+	display:block;
+	height:90px;
+	background-color:#FFFBB1;
+}
+.forwardArrow {
+	position:relative;
+	top:-10px;
+	right:10px;
+	float:right;
+	background-image:url(../images/forwardArrow.png);
+	background-repeat:no-repeat;
+	width:70px;
+	height:70px;
+}
+.doneButtonBlank {
+	position:relative;
+	top:-10px;
+	left:180px;
+	float:right;
+	float:left;
+	background-image:url(../images/doneButtonBlank.png);
+	width:140px;
+	height:70px;
+}
+
+.doneButton {
+	position:relative;
+	top:-10px;
+	left:180px;
+	float:right;
+	float:left;
+	background-image:url(../images/doneButton.png);
+	width:140px;
+	height:70px;
+	cursor:pointer;
+}
+.backArrow {
+	position:relative;
+	top:-10px;
+	left:10px;
+	float:right;
+	float:left;
+	background-image:url(../images/backArrow.png);
+	background-repeat:no-repeat;
+	width:70px;
+	height:70px;
+	cursor:pointer;
+}
+.formContainer {
+	display:block;
+	float:none;
+	width:410px;
+}
+.formLabels {
+	width:200px;
+	text-align:right;
+	float:left;
+}
+.formFields {
+	margin-left:10px;
+	width:200px;
+	text-align:left;
+	float:left;
+}
+div.adminFormContainer {
+    margin: 5px;
+	font-size: 8pt;
+}
+input.adminFormCheck {
+    font-family:verdana,sans-serif;
+    font-size: 8pt;
+    margin: 0px;
+    border: 0px;
+    padding: 0px;
+    height: 1.2em;
+}
+div.adminFormRow {
+    background: #eee;
+    height: 30px;
+    width: 600px;
+    padding: 1px;
+}
+div.adminFormRowAlternate {
+	display:block;
+    background: #ddd;
+    height: 30px;
+    width: 600px;
+    padding: 1px;
+}
+div.adminFormHeader {
+	display:block;
+    border: 0;
+    margin: 0px;
+    padding: 0px;
+    width: 600px;
+    height: 20px;
+    background-color:#ccc;
+}
+div.adminFormScroller {
+    border: 0;
+    overflow: auto;
+    margin: 0px;
+    padding: 0px;
+    width: 600px;
+    height: 350px;
+    background-color:#ffc;
+}
+div.adminFormColHeadName {
+    padding: 0;
+    text-align: left;
+    float: left;
+    width: 170px;
+}
+div.adminFormColHead {
+	text-align:center;
+    float: left;
+    width: 80px;
+}
+div.adminFormColHeadButton {
+	text-align:center;
+    float: left;
+    width: 80px;
+}
+/* Rick's stuff for Admin */
+.titleContainer {
+	background-color: #DCE5DE;
+	border-style:solid;
+	border-width:1px;
+	border-color:#cccccc;
+	overflow: hidden;
+	height: 90px;
+	width: 640px;
+	display: block;
+}
+.progressContainer {
+	background-color:#FFF4E6;
+	display: block;
+	width: 640px;
+	height: 40px;
+}
+.promptContainer {
+	background-color:#DDE0DB;
+	display:block;
+	width:640px;
+	height:100px;
+	overflow:hidden;
+	
+}
+.foilContainer {
+	display:block;
+	overflow:hidden;
+	width:640px;
+	height:80px;
+	background-color:#ffffff;
+}
+.foilContainer div {
+	cursor:pointer;
+	border-style:solid;
+	border-width:thin;
+	border-color:#cccccc;
+	float:left;
+	width:60px;
+	display:block;
+	background-color:#E5FFD4;
+	height:60px;
+}
+.foilContainer a {
+	border-style:solid;
+	border-width:thin;
+	border-color:#cccccc;
+	display:block;
+	height:100%;
+}
+.foil a:link {
+	float:left;
+	width:100%;
+	display:block;
+	background-color:#0000ff;
+	height:100%;
+}
+.foil a:visited {
+	float:left;
+	width:60px;
+	display:block;
+	background-color:#000088;
+	height:100px;
+}
+.foil a:hover {
+	float:left;
+	width:60px;
+	display:block;
+	background-color:#B6E1A3;
+	height:60px;
+}
+.foilSelected {
+	/* background-image:url(../images/check_mark.png);*/
+	float:left;
+	width:60px;
+	display:block;
+/*	background-color:#47E24A; */
+	background-color:#470000;
+	height:60px;
+}
+.foilSelected a {
+	background-image:url(../images/check_mark25x25.png);
+	background-position:center;
+	background-repeat:no-repeat;
+	float:left;
+	width:60px;
+	display:block;
+	background-color:#88E288;
+/*	background-color:#47E24A; */
+	height:100%;
+}
+.surveyFooter {
+	padding-top:10px;
+	width:640px;
+	display:block;
+	height:90px;
+	background-color:#FFFBB1;
+}
+.forwardArrow {
+	float:right;
+	background-image:url(../images/forwardArrow.png);
+	width:70px;
+	height:70px;
+	cursor:pointer;
+}
+.backArrow {
+	float:left;
+	background-image:url(../images/backArrow.png);
+	width:70px;
+	height:70px;
+	cursor:pointer;
+}
+.formContainer {
+	display:block;
+	float:none;
+	width:410px;
+}
+.formLabels {
+	width:200px;
+	text-align:right;
+	float:left;
+}
+.formFields {
+	margin-left:10px;
+	width:200px;
+	text-align:left;
+	float:left;
+}
+div.adminFormContainer {
+    margin: 5px;
+	font-size: 8pt;
+	width: 700px;
+}
+input.adminFormCheck {
+    font-family:verdana,sans-serif;
+    font-size: 8pt;
+    margin: 0px;
+    border: 0px;
+    padding: 0px;
+    height: 1.2em;
+}
+div.adminFormRow {
+    background: #eee;
+    height: 30px;
+    width: inherit;
+    padding: 1px;
+}
+div.adminFormRowAlternate {
+	display:block;
+    background: #ddd;
+    height: 30px;
+    width: inherit;
+    padding: 1px;
+}
+div.adminFormHeader {
+	display:block;
+    border: 0;
+    margin: 0px;
+    padding: 0px;
+    width: inherit;
+    height: 20px;
+    background-color:#ccc;
+}
+div.adminFormScroller {
+    border: 0;
+    overflow: auto;
+    margin: 0px;
+    padding: 0px;
+    width: inherit;
+    height: 350px;
+    background-color:#ffc;
+}
+div.adminFormColHeadName {
+    padding: 0;
+    text-align: left;
+    float: left;
+    width: 170px;
+}
+div.adminFormColHead {
+	text-align:center;
+    float: left;
+    width: 80px;
+}
+div.adminFormColHeadButton {
+	text-align:center;
+    float: left;
+    width: 80px;
+}
+span.currentMenu {
+	padding: 5px 0 5px 10px; 
+	width: 100%; 
+	display: block; 
+	background: #ADB96E;
+	color: #fff;	
+}
+span.currentSubmenu {
+	background:#ADB96E;
+	color:#ffffff;
+}
+div.subNav span:hover, ul.nav a:active, ul.nav a:focus {
+	text-decoration:none;
+	background: #ADB96E; 
+	color: #FFF;
+}
+div#promptContainer {
+	padding-left:4px;
+	padding-top:4px;
+	overflow:scroll;
+	float:left;
+	width:300px;
+	height:300px;
+	display:block;
+	background-color:#ffffcc;
+}
+div#prompt {
+	font-weight:bold;
+	border-bottom:#cccccc;
+	border-style:solid;
+	border-width:thin;
+}
+div#description {
+}
+div#leftText {
+	margin-left:10px;
+	background-image:url(../images/noteBGCropped250x307.jpg);
+	float:left;
+}
+div#rightText {
+	margin-left:10px;
+	background-image:url(../images/noteBGCropped250x307.jpg);
+	float:left;
+}
+textarea.textEntry {
+	background-image:url(../images/noteBGCropped250x307.jpg);
+	max-width:300px;
+	min-width:200px;
+	max-height:300px;
+	border:none;
+	float:left;
+}
+textarea:focus {
+	outline: none; border: none; 
+}

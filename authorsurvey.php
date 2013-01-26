@@ -142,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		}
 		xmlhttp.onreadystatechange=function()  {
 	  		if (xmlhttp.readyState==4 && xmlhttp.status==200)  {
-	  		    //console.log(xmlhttp.responseText + ' back from server');
+	  		    console.log(xmlhttp.responseText + ' back from server');
 	  		    latestServerReturn = xmlhttp.responseText;
   		        var returnData =  eval('(' + xmlhttp.responseText + ')');
 	  		    //console.log(returnData.dataDestination + ' is data destination');
@@ -359,6 +359,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	    focusElement = newFocusItem;
 	    setSelected();
 	}
+    function makeButtonPanel() {
+        var buttonPanel = document.createElement('div');
+        buttonPanel.setAttribute('class','buttonPanel');
+        var addButton = document.createElement('button');
+        addButton.setAttribute('class','trim');
+        addButton.setAttribute('type','button');
+        addButton.setAttribute('onclick','addButtonClicked(this)');
+        var addButtonImage = document.createElement('img');
+        addButtonImage.setAttribute('src','images/plus_sign_23x21.gif');
+        addButton.appendChild(addButtonImage);
+        buttonPanel.appendChild(addButton);
+        var deleteButton = document.createElement('button');
+        deleteButton.setAttribute('class','trim');
+        deleteButton.setAttribute('type','button');
+        deleteButton.setAttribute('onclick','addButtonClicked(this)');
+        var deleteButtonImage = document.createElement('img');
+        deleteButtonImage.setAttribute('src','images/minus_sign_23x21.gif');
+        deleteButton.appendChild(deleteButtonImage);
+        buttonPanel.appendChild(deleteButton);
+        return(buttonPanel);
+    }
 	function makeListItemElement(titleText, itemType) {
         var listItemElement = document.createElement('div');
         listItemElement.className = 'listItemDiv';
@@ -419,28 +440,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         deleteItemButton.appendChild(deleteItemImage);
         destination.appendChild(deleteItemButton);
 	}
+
 	function renderCluster(clusterObj) {
 	    var editRegion = document.getElementById('editRegionContainer');
         var clusterDiv = document.createElement('div');
+        clusterDiv.setAttribute('class','cluster');
         var clusterHeaderDiv = document.createElement('div');
-        clusterDiv.setAttribute('class','clusterHeader');
+        clusterHeaderDiv.setAttribute('class','clusterHeader');
         clusterDiv.setAttribute('onClick', 'clusterClickHandler()');
         var clusterTitleText = document.createTextNode(clusterObj.cluster_header);
         clusterHeaderDiv.appendChild(clusterTitleText);
         clusterDiv.appendChild(clusterHeaderDiv);
         if (clusterObj.hasOwnProperty('clusters')) {
-            
-            console.log(clusterObj.clusters.length + ' clusters in cluster');
         } else {
-            console.log('no clusters here');
         }
         if (clusterObj.hasOwnProperty('items')) {
             for (itemNum = 0; itemNum < clusterObj.items.length; itemNum++) {
                 renderItem(clusterObj.items[itemNum], clusterDiv);
             }
-            console.log(clusterObj.items.length + ' items in cluster');
         } else {
-            console.log('no items here');
         }
         editRegion.appendChild(clusterDiv);
 	}
@@ -448,19 +466,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	    var editRegion = document.getElementById('editRegionContainer');
 	    var itemDiv = document.createElement('div');
 	    itemDiv.setAttribute('class','templateItem');
+	    itemDiv.setAttribute('itemType',itemObj.item_type);
 	    var itemPrompt = document.createTextNode(itemObj.item_prompt);
 	    itemDiv.appendChild(itemPrompt);
-	    clusterDiv.appendChild(itemDiv);
 	    if (itemObj.hasOwnProperty('options')) {
-	        for (optionNum = 0; optionNum < itemObj.options.length; optionNum++) {
-                var optionDiv = document.createElement('div');
-                var optionLabel = document.createTextNode(itemObj.options[optionNum].option_label);
-                optionDiv.appendChild(optionLabel);
-                clusterDiv.appendChild(optionDiv);
+	        if (itemObj.item_type == '1') {
+	            console.log('rendering item type 1');
+    	        for (optionNum = 0; optionNum < itemObj.options.length; optionNum++) {
+                    var optionDiv = document.createElement('div');
+                    var optionLabel = document.createTextNode(itemObj.options[optionNum].option_label);
+                    optionDiv.appendChild(optionLabel);
+                    clusterDiv.appendChild(optionDiv);
+                }
             }
-	    } else {
-	        console.log('item has no options');
 	    }
+	    itemDiv.appendChild(makeButtonPanel());
+	    clusterDiv.appendChild(itemDiv);
 	}
     function renderTemplate() {
         console.log('rendering template');
@@ -565,6 +586,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         background-color:#888;
         color:#fff;
     }
+    button.trim {
+        border:0;
+        background-color:#A00;
+    }
     button:hover {
         background-color:#ddd;
     }
@@ -619,6 +644,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		    display:none;
 		    background-color:#eee;
 		}
+		div.buttonPanel {
+		    float:right;
+		    padding:0px;
+		    margin:0px;
+		}
 		div.listItemDiv {
 		    width:95%;
 		    cursor:pointer;
@@ -632,7 +662,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		    background-color:#dde;
 		}
 		div.clusterHeader {
-		    background-color:#F7FDC6;
+		    background-color:#B0C4DE;
 		    padding: 3px 3px 3px 3px;
 		    border: 1px solid #fff;
 		}

@@ -1,0 +1,43 @@
+@charset "UTF-8";
+/* CSS Document */
+div.groupHead {
+	font-weight:bold;
+}
+div.questionGroup {
+	background-color:#aabbaa;
+	border-radius:10px;
+	border: 2px solid #444;
+	padding:5px;
+	margin:5px;
+}
+div.instrumentItem {
+	background-color:#eeffee;
+	padding:5px;
+	border: 1px solid #888;
+	border-radius:5px;
+	margin:2px;
+}
+div.itemPrompt {
+	font: bold 12px arial,sans-serif;
+	text-align:left;
+}
+div.likertAnchors span {
+	font-size:12px;
+	display:block;
+	float:left;
+	width:110px;
+	text-align:center;
+	border: 1px solid #888;
+}
+div.likertRadio {
+	clear:left;
+}
+div.likertRadio input {
+	width:100px;
+	text-align:center;
+}
+div.pageWrapper {
+	font-family:sans-serif;
+	text-align:center;
+	max-width:600px;
+}

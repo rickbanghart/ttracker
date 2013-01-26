@@ -1,0 +1,51 @@
+body {
+	font-family: Verdana; 
+	margin: 0 auto; 
+	background: #42413c;
+}
+#wrapper {
+	width: 1000px; 
+	height: 800%; 
+	margin: 0 auto; 
+	color: #6B6C6E;/* border: 3px dashed #933;*/
+}
+#header {
+	background: #004f39 url(../images/msuCoe.png) top center no-repeat; 
+	height: 75px; 
+	color: #9d0277;/* border: 2px dashed #990;*/
+}
+#pageWrapper {
+	padding: 0px; 
+	height: 510px;/* border: 2px dashed #F63;*/
+}
+#pageLeft {
+	float: left; 
+	width: 80px;
+	overflow:hidden;
+	background: #eadcae; 
+	height: 100%;/* border: 2px dashed #630;*/
+}
+#pageRight {
+	float: right; 
+	width: 90%; 
+	background: #fff; 
+	height: 100%; 
+	padding: 0px; 
+	overflow: auto;/* border: 2px dashed #93C;*/
+}
+#footer {
+	font-size: 12px; 
+	text-align: center; 
+	padding: 10px 0; 
+	background: #ccc49f;/* border: 2px dashed #F39;*/
+}
+a {
+	color: #42413C; 
+	text-decoration: underline;
+}
+a:visited {
+	color: #6E6C64;
+}
+a:hover, a:active, a:focus {
+	text-decoration: none;
+}
