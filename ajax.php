@@ -10,18 +10,25 @@ $examinee_id;
 // handle all POST and GET variables here
 // set a bunch of variables to be used globally
 // $action
+echo(" server request:" );
+echo($_REQUEST);
+	foreach ($_REQUEST as $key=>$value) {
+	    echo 'a request key is ' . $key;
+		$$key = $value;
+	}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    //echo 'POST ';
+    echo 'POST ';
 	foreach ($_POST as $key=>$value) {
-	    //echo 'a key is ' . $key;
+	    echo 'a post key is ' . $key;
 		$$key = $value;
 	}
 } else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    //echo 'GET';
+    echo 'GET';
 	foreach ($_GET as $key=>$value) {
+		echo "a get key is " . $key;
 		$$key = $value;
-		//echo $key . ' is ' . $value . ' ';
+		echo $key . ' is ' . $value . ' ';
 	}
 }
 //echo phpinfo();
@@ -45,7 +52,7 @@ switch ($action) {
 		save_template();
 		
 		break;
-	case 'save_response':
+	case 'saveresponse':
 		save_response();
 		break;
 	case 'get_surveys':
@@ -559,6 +566,7 @@ function save_template() {
 	//echo 'from server is: ' . $row->id_value;
 }
 function save_response() {
+	global $action;
 	echo("found action=" + $action);
 	echo("saving response");
 }
