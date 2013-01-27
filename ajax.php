@@ -559,6 +559,7 @@ function save_template() {
 	//echo 'from server is: ' . $row->id_value;
 }
 function save_response() {
+	echo("found action=" + $action);
 	echo("saving response");
 }
 function save_selection() {

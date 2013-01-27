@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		saveResponse();
 	}
 	
-	function ajaxCall ( ) {
+	function ajaxCall (action) {
 		console.log('in the ajax script');
 		var xmlhttp;
 		if (window.XMLHttpRequest)
@@ -47,17 +47,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			console.log('ready state changed');
 		  	if (xmlhttp.readyState==4 && xmlhttp.status==200)  {
 				console.log('200 returned');
+				console.log('server returned: ' + xmlhttp.responseText)
 		    }
 		}
-		xmlhttp.open("POST","ajax.php?action=saveresponse",true);
+		xmlhttp.open("POST","ajax.php?action=" + action,true);
 		xmlhttp.send();
-		console.log('made the http request object');
+;
 	}
 	function saveResponse() {
-		ajaxCall();
+		// talk to database from here
+		// save current state of radio buttons, check boxes, text entry fields
+		// *** QUESTION: Should the undo function be enabled?
+		 
+		ajaxCall('saveresponse');
 	}	
 </script>
 <body>
+	<form>
 	<div class="pageWrapper">
 	<div class="questionGroup">
 	<div class="groupHead">Questions about Your Learning</div>
@@ -492,5 +498,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		<input type="button" value="submit" onclick="submitForm(this)" />
 	</div>
 </div>
+</form>
 </body>
 </html>
