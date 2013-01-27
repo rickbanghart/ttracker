@@ -24,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		//echo $key . ' is ' . $value . ' ';
 	}
 }
+//echo phpinfo();
 //echo $action;
 //die;
 switch ($action) {
@@ -43,6 +44,9 @@ switch ($action) {
 	case 'savetemplate':
 		save_template();
 		
+		break;
+	case 'save_response':
+		save_response();
 		break;
 	case 'get_surveys':
 		get_surveys();
@@ -191,7 +195,7 @@ function get_template_detail() {
     $qry = "{call dbo.sp_get_template_detail(?)}";
     $query_params[0] = $templateid;
     $field_list = array('template_id', 'template_title','cluster_id','template_description',
-            'cluster_header', 'item_id', 'item_prompt', 'item_description',
+            'cluster_header', 'item_id','item_type', 'item_prompt', 'item_description',
             'cluster_parent_id', 'option_id', 'option_numeric_value',
             'option_text_value', 'option_type', 'option_label',
             'option_description');
@@ -243,6 +247,7 @@ function get_template_detail() {
             $options = array();
             $optionObject = array();
             $item_object['item_id'] = $templateDetails[$row]['item_id'];
+            $item_object['item_type'] = $templateDetails[$row]['item_type'];
             $item_object['item_prompt'] = $templateDetails[$row]['item_prompt'];
             $item_object['item_description'] = $templateDetails[$row]['item_description'];
             $in_item = 1;
@@ -552,6 +557,9 @@ function save_template() {
 	$row = sqlsrv_fetch_object($rst);
 	echo(json_encode($returnData));
 	//echo 'from server is: ' . $row->id_value;
+}
+function save_response() {
+	echo("saving response");
 }
 function save_selection() {
 	global $conn;

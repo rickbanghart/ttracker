@@ -28,10 +28,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <script type="text/javascript">
 	function submitForm(buttonClicked) {
-		alert("Found it");
 		console.log("submit clicked");
+		saveResponse();
 	}
-		
+	
+	function ajaxCall ( ) {
+		console.log('in the ajax script');
+		var xmlhttp;
+		if (window.XMLHttpRequest)
+		  {// code for IE7+, Firefox, Chrome, Opera, Safari
+		  xmlhttp=new XMLHttpRequest();
+		  }
+		else
+		  {// code for IE6, IE5
+		  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange=function()  {
+			console.log('ready state changed');
+		  	if (xmlhttp.readyState==4 && xmlhttp.status==200)  {
+				console.log('200 returned');
+		    }
+		}
+		xmlhttp.open("POST","ajax.php?action=saveresponse",true);
+		xmlhttp.send();
+		console.log('made the http request object');
+	}
+	function saveResponse() {
+		ajaxCall();
+	}	
 </script>
 <body>
 	<div class="pageWrapper">
