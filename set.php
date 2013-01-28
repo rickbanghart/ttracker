@@ -32,9 +32,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		saveResponse();
 	}
 	
-	function ajaxCall (action) {
+	function ajaxCall (params) {
 		console.log('in the ajax script');
 		var xmlhttp;
+		var async = false;
 		if (window.XMLHttpRequest)
 		  {// code for IE7+, Firefox, Chrome, Opera, Safari
 		  xmlhttp=new XMLHttpRequest();
@@ -50,8 +51,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				console.log('server returned: ' + xmlhttp.responseText)
 		    }
 		}
-		xmlhttp.open("POST","ajax.php?action=" + action,true);
-		xmlhttp.send();
+		xmlhttp.open("POST","ajax.php",async);
+		//Send the proper header information along with the request
+		xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xmlhttp.setRequestHeader("Content-length", params.length);
+		xmlhttp.setRequestHeader("Connection", "close");
+		xmlhttp.send(params);
 ;
 	}
 	function saveResponse() {
@@ -59,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		// save current state of radio buttons, check boxes, text entry fields
 		// *** QUESTION: Should the undo function be enabled?
 		 
-		ajaxCall('saveresponse');
+		ajaxCall('action=saveresponse;l1=2');
 	}	
 </script>
 <body>
@@ -483,15 +488,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 	<div class="instrumentItem">
 		<div class="itemPrompt">Comments about your learning in this course</div>
+		<textarea name="learningDomments" class="textInput"></textarea>
 	</div>
 	<div class="instrumentItem">
 		<div class="itemPrompt">Comments about this course</div>
+		<textarea name="courseComments" class="textInput"></textarea>
 	</div>
 	<div class="instrumentItem">
 		<div class="itemPrompt">Comments about the instructor of course</div>
+		<textarea name="instructorComments" class="textInput"></textarea>
 	</div>
 	<div class="instrumentItem">
 		<div class="itemPrompt">Other comments</div>
+		<textarea name="otherDomments" class="textInput"></textarea>
 	</div>
 	</div>
 	<div class="buttonPanel">
