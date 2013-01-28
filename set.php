@@ -22,16 +22,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+	<script type="text/javascript" src="js/jquery/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/set.css">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Set Form</title>
-</head>
 <script type="text/javascript">
 	function submitForm(buttonClicked) {
 		console.log("submit clicked");
-		saveResponse();
+    var $form = $('form');
+    // let's select and cache all the fields
+    var $inputs = $form.find("input, select, button, textarea");
+    // serialize the data in the form
+    var serializedData = $form.serialize();
+		console.log(serializedData + ' serialized');
+$.ajax({
+  type: "POST",
+  url: "ajax.php",
+  data: serializedData,
+  success: success
+});
+		return false;
+		//saveResponse();
+		return false;
 	}
-	
+	function success() {
+	}
 	function ajaxCall (params) {
 		console.log('in the ajax script');
 		var xmlhttp;
@@ -67,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		ajaxCall('action=saveresponse;l1=2');
 	}	
 </script>
+</head>
 <body>
 	<form>
 	<div class="pageWrapper">
