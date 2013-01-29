@@ -45,34 +45,10 @@ $.ajax({
 		//saveResponse();
 		return false;
 	}
-	function success() {
-	}
-	function ajaxCall (params) {
-		console.log('in the ajax script');
-		var xmlhttp;
-		var async = false;
-		if (window.XMLHttpRequest)
-		  {// code for IE7+, Firefox, Chrome, Opera, Safari
-		  xmlhttp=new XMLHttpRequest();
-		  }
-		else
-		  {// code for IE6, IE5
-		  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		xmlhttp.onreadystatechange=function()  {
-			console.log('ready state changed');
-		  	if (xmlhttp.readyState==4 && xmlhttp.status==200)  {
-				console.log('200 returned');
-				console.log('server returned: ' + xmlhttp.responseText)
-		    }
-		}
-		xmlhttp.open("POST","ajax.php",async);
-		//Send the proper header information along with the request
-		xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		xmlhttp.setRequestHeader("Content-length", params.length);
-		xmlhttp.setRequestHeader("Connection", "close");
-		xmlhttp.send(params);
-;
+	function success(data, status, jqxhr) {
+		console.log(status + ' is status');
+		console.log(jqxhr.responseText + ' is response text');
+		console.log('success from ajax');
 	}
 	function saveResponse() {
 		// talk to database from here
@@ -85,6 +61,7 @@ $.ajax({
 </head>
 <body>
 	<form>
+	<input type="hidden" name="action" value="saveresponse" />
 	<div class="pageWrapper">
 	<div class="questionGroup">
 	<div class="groupHead">Questions about Your Learning</div>

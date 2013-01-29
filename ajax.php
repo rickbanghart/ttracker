@@ -10,26 +10,26 @@ $examinee_id;
 // handle all POST and GET variables here
 // set a bunch of variables to be used globally
 // $action
-echo("server request:\n" );
-echo($_REQUEST);
-echo('the method is ' . $_SERVER['REQUEST_METHOD'] . "\n");
-	foreach ($_REQUEST as $key=>$value) {
-	    echo 'a request key is ' . $key . "\n";
-		$$key = $value;
-	}
+//echo("server request:\n" );
+//echo($_REQUEST);
+//echo('the method is ' . $_SERVER['REQUEST_METHOD'] . "\n");
+	//foreach ($_REQUEST as $key=>$value) {
+	    //echo 'a request key is ' . $key . "\n";
+		//$$key = $value;
+	//}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    echo 'POST ';
+    //echo 'POST ';
 	foreach ($_POST as $key=>$value) {
-	    echo 'a post key is ' . $key . "\n";
+	    //echo 'a post key is ' . $key . "\n";
 		$$key = $value;
 	}
 } else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    echo 'GET';
+    //echo 'GET';
 	foreach ($_GET as $key=>$value) {
-		echo "a get key is " . $key . "\n";
+		//echo "a get key is " . $key . "\n";
 		$$key = $value;
-		echo $key . ' is ' . $value . "\n";
+		//echo $key . ' is ' . $value . "\n";
 	}
 }
 //echo phpinfo();
@@ -568,7 +568,7 @@ function save_template() {
 }
 function save_response() {
 	global $action;
-	echo("found action=" + $action);
+	//echo("found action=" + $action);
 	echo("saving response");
 }
 function save_selection() {
