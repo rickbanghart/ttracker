@@ -29,34 +29,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <script type="text/javascript">
 	function submitForm(buttonClicked) {
 		console.log("submit clicked");
-    var $form = $('form');
+    	var $form = $('form');
     // let's select and cache all the fields
-    var $inputs = $form.find("input, select, button, textarea");
+    //var $inputs = $form.find("input, select, button, textarea");
     // serialize the data in the form
-    var serializedData = $form.serialize();
+    	var serializedData = $form.serialize();
 		console.log(serializedData + ' serialized');
-$.ajax({
-  type: "POST",
-  url: "ajax.php",
-  data: serializedData,
-  success: success
-});
+		$.ajax({
+  			type: "POST",
+  			url: "ajax.php",
+  			data: serializedData,
+  			success: success
+		});
 		return false;
-		//saveResponse();
-		return false;
+		
 	}
 	function success(data, status, jqxhr) {
 		console.log(status + ' is status');
 		console.log(jqxhr.responseText + ' is response text');
 		console.log('success from ajax');
 	}
-	function saveResponse() {
-		// talk to database from here
-		// save current state of radio buttons, check boxes, text entry fields
-		// *** QUESTION: Should the undo function be enabled?
-		 
-		ajaxCall('action=saveresponse;l1=2');
-	}	
+	
 </script>
 </head>
 <body>
