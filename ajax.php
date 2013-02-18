@@ -570,6 +570,11 @@ function save_response() {
 	global $action;
 	//echo("found action=" + $action);
 	echo("saving response");
+	foreach ($_REQUEST as $key=>$value) {
+	    echo 'a request key is ' . $key . "\n";
+		$$key = $value;
+	}
+	echo($_REQUEST);
 }
 function save_selection() {
 	global $conn;
