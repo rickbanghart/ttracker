@@ -1,0 +1,49 @@
+﻿[OPTIONS]
+Compiled File=TE Data.chm
+Title=TE Data
+Contents File=TE Data.hhc
+Index File=TE Data.hhk
+Default topic=First_Topic.htm
+Default Window=
+Error log file=
+Display compile progress=No
+Display compile notes=No
+Full-text search=Yes
+Binary Index=Yes
+Auto Index=No
+Enhanced decompilation=No
+Binary TOC=No
+Flat=No
+LANG_ID=1033
+LANG_NAME=English (US)
+
+[WINDOWS]
+
+[FILES]
+st_survey_response_text.htm
+st_group.htm
+st_template.htm
+st_survey_response.htm
+st_cluster_item.htm
+First_Topic.htm
+st_option_group.htm
+st_cluster.htm
+tt_user.htm
+st_option.htm
+st_assignment.htm
+st_survey_item.htm
+st_item.htm
+st_instance.htm
+
+TE Data.glo
+TE Data.brs
+[ALIAS]
+#include TE Data.ali
+
+[MAP]
+#include BSSCDefault.h
+
+[TEXT POPUPS]
+BSSCDefault.h
+
+

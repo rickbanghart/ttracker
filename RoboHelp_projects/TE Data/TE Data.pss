@@ -1,0 +1,91 @@
+﻿[Target:WebHelp Pro]
+ResultFileName=!SSL!\WebHelp_Pro\TE_Data.htm
+SSLayoutType=32
+ServerProjectName=TE Data
+CreateProjectTime=
+CreateProjectUser=
+SupportMas_MPJ=1
+[Target:WebHelp]
+ResultFileName=Z:\Documents\TeacherPrep\github\ttracker\Help System\index.htm
+SSLayoutType=2
+CreateProjectTime=19:33, March 01, 2013
+CreateProjectUser=Rick Banghart
+SupportMas_MPJ=1
+ActionID For Generation=1001
+Remove Folder with prompt=1
+ViewFileName=Z:\Documents\TeacherPrep\github\ttracker\Help System\index.htm
+ResultStatus=0
+BuildTimeHi=30283510
+BuildTimeLow=-1394618756
+[Target:Microsoft HTML Help]
+ResultFileName=!SSL!\Microsoft_HTML_Help\TE_Data.chm
+SSLayoutType=1
+CreateProjectTime=
+CreateProjectUser=
+SupportMas_MPJ=1
+[Target:FlashHelp]
+ResultFileName=!SSL!\FlashHelp\TE_Data.htm
+SSLayoutType=2
+CreateProjectTime=
+CreateProjectUser=
+SupportMas_MPJ=1
+[Target:Printed Documentation]
+ResultFileName=!SSL!\Printed_Documentation\TE_Data.doc
+SSLayoutType=7
+[Target:XML Output]
+ResultFileName=!SSL!\XML_Output\TE_Data.xml
+SSLayoutType=8129
+[Target:FlashHelp Pro]
+ResultFileName=!SSL!\FlashHelp_Pro\TE_Data.htm
+SSLayoutType=2
+CreateProjectTime=
+CreateProjectUser=
+SupportMas_MPJ=1
+[Target:Adobe AIR]
+ResultFileName=!SSL!\Adobe_AIR\TE_Data.air
+SSLayoutType=512
+CreateProjectTime=
+CreateProjectUser=
+SupportMas_MPJ=1
+[Target:Multiscreen HTML5]
+ResultFileName=!SSL!\Multiscreen_HTML5\TE_Data.htm
+SSLayoutType=2
+CreateProjectTime=
+CreateProjectUser=
+SupportMas_MPJ=1
+[Target:eBook]
+ResultFileName=!SSL!\eBook\TE_Data.epub
+SSLayoutType=2
+CreateProjectTime=
+CreateProjectUser=
+SupportMas_MPJ=1
+[PreSingleSource]
+Html Help Project=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\TE Data.hhp
+Table Of Content=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\TE Data.hhc
+Index=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\TE Data.hhk
+Topic Index=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\RHTopicKeyword$.hhk
+See Also Index=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\TE Data.hha
+Browse Sequence=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\TE Data.brs
+Glossary=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\TE Data.glo
+Topic Properties=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\TE Data.trs
+Active Folders=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\TE Data.trf
+Baggage Files=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\TE Data.trb
+Skin List=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\TE Data.trk
+Active Layout Names=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\TE Data.trl
+Template Files=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\TE Data.trt
+Project TOC List=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\TE Data.trtocl
+Project Index List=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\TE Data.tridxl
+Project Glossary List=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\TE Data.trglol
+Project CSS List=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\TE Data.trcss
+Project Variable Set List=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\TE Data.trvset
+External URL Settings=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\SearchOptions.xml
+Screen Template File Details=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\TE Data.sctfdl
+CPSwfToHTML5Map=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\__cpSwf2HTML5ZipMap
+Default Topic=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\First_Topic.htm
+Build Tags0=31012;Online | Print
+Build Tags=
+Build Expression=
+Language ID=1033
+Language Name=en_US
+Language=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\!Language!\en_US\RoboHHRE.lng
+Stop List=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\!Language!\en_US\TE Data.stp
