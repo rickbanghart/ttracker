@@ -3,7 +3,7 @@ Compiled File=TE Data.chm
 Title=TE Data
 Contents File=TE Data.hhc
 Index File=TE Data.hhk
-Default topic=First_Topic.htm
+Default topic=Database\First_Topic.htm
 Default Window=
 Error log file=
 Display compile progress=No
@@ -20,20 +20,21 @@ LANG_NAME=English (US)
 [WINDOWS]
 
 [FILES]
-st_survey_response_text.htm
-st_group.htm
-st_template.htm
-st_survey_response.htm
-st_cluster_item.htm
-First_Topic.htm
-st_option_group.htm
-st_cluster.htm
-tt_user.htm
-st_option.htm
-st_assignment.htm
-st_survey_item.htm
-st_item.htm
-st_instance.htm
+Database\st_survey_response_text.htm
+Database\st_group.htm
+Database\st_template.htm
+Database\st_survey_response.htm
+Database\st_cluster_item.htm
+Database\First_Topic.htm
+Server_Calls\Overview.htm
+Database\st_option_group.htm
+Database\st_cluster.htm
+Database\tt_user.htm
+Database\st_option.htm
+Database\st_assignment.htm
+Database\st_survey_item.htm
+Database\st_item.htm
+Database\st_instance.htm
 
 TE Data.glo
 TE Data.brs

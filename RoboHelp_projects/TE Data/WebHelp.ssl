@@ -4,7 +4,7 @@
       <element name="SSTemplate" value="" />
       <element name="SSMapFileList" value="BSSCDefault.h:" />
       <element name="SSTemplateOption" value="0" />
-      <element name="SSDefaultTopic" value="First_Topic.htm" />
+      <element name="SSDefaultTopic" value="Database\First_Topic.htm" />
       <element name="title" value="Content" />
       <element name="default" value="1" />
       <element name="SSPublishLang" value="" />

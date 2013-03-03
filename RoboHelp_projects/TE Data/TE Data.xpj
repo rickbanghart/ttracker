@@ -2,7 +2,7 @@
 <rhpml majorversion="5" minorversion="0">
 	<projectproperties>
 		<projecttitle>TE Data</projecttitle>
-		<homepage>First_Topic.htm</homepage>
+		<homepage>Database\First_Topic.htm</homepage>
 		<primarylayout>Multiscreen HTML5</primarylayout>
 		<Flags>92</Flags>
 		<language>1033</language>
