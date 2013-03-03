@@ -8,7 +8,7 @@ SupportMas_MPJ=1
 [Target:WebHelp]
 ResultFileName=Z:\Documents\TeacherPrep\github\ttracker\Help System\index.htm
 SSLayoutType=2
-CreateProjectTime=13:10, March 03, 2013
+CreateProjectTime=13:12, March 03, 2013
 CreateProjectUser=Rick Banghart
 SupportMas_MPJ=1
 ActionID For Generation=1001
@@ -16,7 +16,7 @@ Remove Folder with prompt=1
 ViewFileName=Z:\Documents\TeacherPrep\github\ttracker\Help System\index.htm
 ResultStatus=0
 BuildTimeHi=30283859
-BuildTimeLow=-1677892560
+BuildTimeLow=-547267560
 [Target:Microsoft HTML Help]
 ResultFileName=!SSL!\Microsoft_HTML_Help\TE_Data.chm
 SSLayoutType=1
@@ -82,7 +82,7 @@ External URL Settings=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_
 Screen Template File Details=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\TE Data.sctfdl
 CPSwfToHTML5Map=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\__cpSwf2HTML5ZipMap
 Default Topic=\\psf\Home\Documents\TeacherPrep\github\ttracker\RoboHelp_projects\TE Data\Database\First_Topic.htm
-Build Tags0=14316;Online | Print
+Build Tags0=6878;Online | Print
 Build Tags=
 Build Expression=
 Language ID=1033
