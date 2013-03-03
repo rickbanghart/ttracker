@@ -53,7 +53,8 @@ if (window.gbWhTopic)
 
 	if (window.addTocInfo)
 	{
-	addButton("show",BTN_TEXT,"Show","","","","",0,0,"","","");
+	addTocInfo("Server Calls\nOverview");
+addButton("show",BTN_TEXT,"Show","","","","",0,0,"","","");
 
 	}
 	if (window.writeBtnStyle)
@@ -65,7 +66,7 @@ if (window.gbWhTopic)
 	
 	document.write("<p style=\"text-align:right\"> ");
 AddMasterBreadcrumbs("../index.htm", "", ">", "Home", "../Database/First_Topic.htm");
-document.write("Overview<\/p>");
+document.write("<a href=\"Overview.htm\">Server Calls<\/a> > Overview<\/p>");
 
 }
 else
