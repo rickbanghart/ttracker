@@ -21,13 +21,13 @@ $examinee_id;
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //echo 'POST ';
 	foreach ($_POST as $key=>$value) {
-	    //echo 'a post key is ' . $key . "\n";
+	    //echo 'a POST key is ' . $key . "\n";
 		$$key = $value;
 	}
 } else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     //echo 'GET';
 	foreach ($_GET as $key=>$value) {
-		//echo "a get key is " . $key . "\n";
+		//echo "a GET key is " . $key . "\n";
 		$$key = $value;
 		//echo $key . ' is ' . $value . "\n";
 	}
@@ -62,7 +62,7 @@ switch ($action) {
 	case 'gettemplatedetail':
 	    get_template_detail();
 	    break;
-	case '':
+	case 'markcomplete':
 		mark_complete();
 		break;
 	case 'get_templates':
@@ -335,39 +335,123 @@ function get_survey_display_framework() { ?>
 //						t8.examiner_id = ? AND
 //						t8.instance_id = ?
 function get_survey() {
-	// delivers an XML version of an entire survey
+	// delivers a JSON version of an entire survey
 	// display will be handled client side
+	//echo "getting survey here <br>";
 	global $conn;
+	global $assignment_id;
 	global $instance_id;
 	global $examiner_id;
 	global $examinee_id;
-	$query_params[0] = intval($instance_id);
-	$query_params[1] = intval($examiner_id);
-	$query_params[2] = intval($examinee_id);
+	$query_params[0] = intval($assignment_id);
 	$returnData['instance'] = $instance_id;
 	$returnData['examiner'] = $examiner_id;
 	$returnData['examinee'] = $examinee_id;
+	$returnData['assignment_id'] = $assignment_id;
 	//$query_params[3] = $instance_id;
-	$qry = "{call EDUC\banghart.sp_get_survey(?,?,?)}";
+	$qry = "{call dbo.sp_get_survey(?)}";
 	$rst = sqlsrv_query($conn,$qry,$query_params);
-      if( ($errors = sqlsrv_errors() ) != null)
-      {
-         foreach( $errors as $error)
-         {
+	$first_row = 1;
+    if( ($errors = sqlsrv_errors() ) != null){
+        foreach( $errors as $error){
             echo "SQLSTATE: ".$error[ 'SQLSTATE']."\n";
             echo "code: ".$error[ 'code']."\n";
             echo "message: ".$error[ 'message']."\n";
-         }
-         die('that is all');
-      }
-      $returnData[] = 'one element';
-      $counter  = 1;
-      	while ($row = sqlsrv_fetch_array($rst, SQLSRV_FETCH_ASSOC)) {
-      	    $returnData[$counter] = $row;
-            $counter ++;
         }
-        $testJSON = '{"status":"OK"}';
-        echo(json_encode($returnData));
+        die('that is all');
+    }
+    $counter  = 1;
+    $current_cluster = -1;
+    $in_cluster = 0;
+    $current_item = 0;
+    $in_item = 0;
+    while ($row = sqlsrv_fetch_array($rst, SQLSRV_FETCH_ASSOC)) {
+      	// $returnData[$counter] = $row;
+        $counter ++;
+        
+    	if ($first_row == 1) {
+    		//echo "handling first row <br>";
+			$returnData['instance'] = $row['instance_id'];
+			$returnData['examiner'] = $row['examiner_id'];
+			$returnData['examinee'] = $row['examinee_id'];
+			$returnData['examinerName'] = $row['examiner_first_name'] . ' ' . $row['examiner_last_name'];
+			$returnData['examineeName'] = $row['examinee_first_name'] . ' ' . $row['examinee_last_name'];
+			$returnData['assignment_id'] = $assignment_id;
+    		$first_row = 0;
+    	}
+        if ($current_cluster != $row['cluster_id']) {
+        	
+        	if ($in_cluster == 1) {
+        		if ($in_item = 1) {
+        			$this_item['options'] = $options_array;
+        			$item_array[] = $this_item;
+        			$this_cluster['items'] = $item_array;
+        		}
+        		$clusters_array[] = $this_cluster;
+        	}
+        	$in_cluster = 1;
+        	$current_cluster = $row['cluster_id'];
+        	$this_cluster['cluster_id'] = $row['cluster_id'];
+			$this_cluster['heading'] = $row['cluster_heading'];
+        }
+        // cluster is created, now need to build list of items within cluster
+        if ($row['item_id'] != $current_item) {
+        	//echo "new item here <br>";
+        	if ($in_item == 1) {
+        		$this_item['options'] = $options_array;
+        		$item_array[] = $this_item;
+        		//echo ("Here is the item: <br>");
+        		// echo(json_encode($this_item));
+        		//echo ("<br> Here is the item array <br>");
+        		// echo(json_encode($item_array));
+        		$options_array = array();
+        	}
+        	$in_item = 1;
+        	$this_item['item_id'] = $row['item_id'];
+        	$this_item['description'] = $row['item_description'];
+        	$this_item['prompt'] = $row['item_prompt'];
+        	$this_item['type'] = $row['item_type'];
+        	$current_item = $row['item_id'];
+        	
+        	$this_option = array ('label' => $row['label'],
+        		'numeric_value' => $row['numeric_value'],
+        		'text_value' => $row['text_response'],
+        		'type' => $row['option_type'],
+        		'id' => $row['option_id']);
+        	if ($row['option_choice']) {
+        		$this_option['checked'] = 'checked';
+        	} else {
+        		$this_option['checked'] = 'notchecked';
+        	}
+           	$options_array[] = $this_option;
+        } else {
+        	// continuing with previous item
+        	$this_option = array ('label' => $row['label'],
+        		'numeric_value' => $row['numeric_value'],
+        		'text_value' => $row['text_response'],
+        		'type' => $row['option_type'],
+        		'id' => $row['option_id']);
+        	if ($row['option_choice']) {
+        		$this_option['checked'] = 'checked';
+        	} else {
+        		$this_option['checked'] = 'notchecked';
+        	}
+          	$options_array[] = $this_option;
+        }
+        
+    }
+    if ($in_cluster == 1) {
+        if ($in_item = 1) {
+        	$this_item['options'] = $options_array;
+  			$item_array[] = $this_item;
+        	$this_cluster['items'] = $item_array;
+       	}
+    	$this_cluster['items'] = $item_array;
+    	$clusters_array[] = $this_cluster;
+    }
+    $resturnData['something']='some value here';
+    $returnData['clusters'] = $clusters_array;
+    echo(json_encode($returnData));
 }
 function get_survey_old() { 
 	// delivers an XML version of an entire survey
@@ -568,13 +652,26 @@ function save_template() {
 }
 function save_response() {
 	global $action;
+	global $conn;
 	//echo("found action=" + $action);
-	echo("saving response");
+	//echo("saving response ");
+	global $assignment_id;
 	foreach ($_REQUEST as $key=>$value) {
+		$result = substr_compare($key, 'item', 0, 4);
+		echo 'compare result is: ' . $result . "\n";
+		if ($result == 0) {
+			$item_id = substr($key, 4);
+			$query_params = array($assignment_id, $item_id, $_REQUEST[$key]);
+			sql_errors_display();
+			echo "save an item: $assignment_id, $item_id, " . $_REQUEST[$key] . " \n";
+			$qry = "{call dbo.sp_save_survey_response(?,?,?)}";
+			$rst = sqlsrv_query($conn, $qry, $query_params);
+		}
 	    echo 'a request key is ' . $key . "\n";
 		$$key = $value;
 	}
-	echo($_REQUEST);
+	
+	//echo("received in ajax call: " . $_REQUEST);
 }
 function save_selection() {
 	global $conn;
