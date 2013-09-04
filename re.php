@@ -107,12 +107,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			for (var itemNum = 0; itemNum < numItems; itemNum ++) {
 				item = items[itemNum];
 				console.log ('the item is ' + item.type + ' type');
+				console.log ('the item id is ' + item.item_id);
 				switch (item.type) {
 					case 1:
 						 var renderedItem = renderRadioGroup(item, itemNum);
 					break;
 					case 2:
-						var renderedItem = renderTextArea(item, itemNum);
+						var renderedItem = renderTextArea(item, item.item_id);
 					break
 					default:
 						// default statements
@@ -153,14 +154,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	function renderTextArea(item, itemNum) {
 		var itemElement = document.createElement('div');
 		itemElement.setAttribute('class',"instrumentItem");
-		itemElement.setAttribute('id', 'item' + itemNum);
 		itemPrompt = document.createTextNode(item.prompt);
 		itemElement.appendChild(itemPrompt);
-		var textArea = document.createElement('textarea');
+		var textArea = document.createElement('input');
+		textArea.setAttribute('type','text');
 		textArea.setAttribute('class','textInput');
-		textArea.setAttribute('id', 'item' + itemNum);
-		textResponse = document.createTextNode(item.options[0].text_value);
-		textArea.appendChild(textResponse);
+		textArea.setAttribute('id', 't_item' + item.item_id);
+		textArea.setAttribute('name', 't_item' + item.item_id);
+		textArea.value = item.options[0].text_value;
 		itemElement.appendChild(textArea);
 		return(itemElement);		
 	}

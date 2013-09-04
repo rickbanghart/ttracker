@@ -658,7 +658,7 @@ function save_response() {
 	global $assignment_id;
 	foreach ($_REQUEST as $key=>$value) {
 		$result = substr_compare($key, 'item', 0, 4);
-		echo 'compare result is: ' . $result . "\n";
+		echo 'compare (confirm) result is: ' . $result . "\n";
 		if ($result == 0) {
 			$item_id = substr($key, 4);
 			$query_params = array($assignment_id, $item_id, $_REQUEST[$key]);
@@ -666,6 +666,15 @@ function save_response() {
 			echo "save an item: $assignment_id, $item_id, " . $_REQUEST[$key] . " \n";
 			$qry = "{call dbo.sp_save_survey_response(?,?,?)}";
 			$rst = sqlsrv_query($conn, $qry, $query_params);
+		} else {
+			$item_id = substr($key, 6);
+			echo "item id is $item_id, key is $key \n";
+			echo "value is " . $_REQUEST[$key] . "\n";
+			$query_params = array($assignment_id, $item_id, $_REQUEST[$key]);
+			$qry = "{call dbo.sp_save_survey_response_text(?,?,?)}";
+			$rst = sqlsrv_query($conn, $qry, $query_params);
+			sql_errors_display();
+			echo "t_item here result is $result \n";
 		}
 	    echo 'a request key is ' . $key . "\n";
 		$$key = $value;
