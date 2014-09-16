@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ASCII"?>
+<!DOCTYPE PRJ SYSTEM "ttracker.dtd">
+<PRJ>
+  <Project_ID>
+    <Signature>UE Proj: v.1</Signature>
+  </Project_ID>
+  <Group_Filter>
+    <OF Name="/Users/banghart/Documents/Teacher Ed/github/ttracker/">*.*</OF>
+  </Group_Filter>
+  <Files>
+    <File>/Users/banghart/Documents/Teacher Ed/github/ttracker/</File>
+  </Files>
+  <Project_Information>
+    <Filter/>
+    <Include_Sub_Dir>1</Include_Sub_Dir>
+    <Relative_to_Project_File>1</Relative_to_Project_File>
+    <Word_File>/Users/banghart/Library/Application Support/UltraEdit/wordfiles</Word_File>
+    <Use_Relative_Dir>1</Use_Relative_Dir>
+    <Filter_Dot_Files>1</Filter_Dot_Files>
+    <Tag_File/>
+    <Create_Tagfile>0</Create_Tagfile>
+    <CTags_Support>0</CTags_Support>
+    <Project_Directory>/Users/banghart/Documents/Teacher Ed/github/ttracker</Project_Directory>
+  </Project_Information>
+</PRJ>
