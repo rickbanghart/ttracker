@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ASCII"?>
+<!DOCTYPE PRJ SYSTEM "ttracker.Ricks-Office.banghart.dtd">
+<PRJ>
+  <Folder Name="">
+    <Expand>0</Expand>
+  </Folder>
+  <Folder Name="/Users/banghart/Documents/Teacher Ed/github/ttracker/ - /Users/banghart/Documents/Teacher Ed/github/ttracker/includes/"/>
+  <Folder Name="/Users/banghart/Documents/Teacher Ed/github/ttracker/ - /Users/banghart/Documents/Teacher Ed/github/ttracker/js/ - /Users/banghart/Documents/Teacher Ed/github/ttracker/js/jquery/"/>
+  <Project_Information>
+    <Project_Start>1E000000270000000E000000100000000800000072000000020000000201000001000000909DFFFF4CA38E0691</Project_Start>
+  </Project_Information>
+  <Active_Settings>
+    <Active_File_Display_Mode>-1</Active_File_Display_Mode>
+  </Active_Settings>
+  <Folder Name="/Users/banghart/Documents/Teacher Ed/github/ttracker/">
+    <Expand>0</Expand>
+  </Folder>
+  <Folder Name="/Users/banghart/Documents/Teacher Ed/github/ttracker/ - /Users/banghart/Documents/Teacher Ed/github/ttracker/batch/"/>
+  <Folder Name="/Users/banghart/Documents/Teacher Ed/github/ttracker/ - /Users/banghart/Documents/Teacher Ed/github/ttracker/js/"/>
+</PRJ>
